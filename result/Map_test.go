@@ -19,10 +19,11 @@ func TestMapWhenResultIsOkAndCallReturnsOkThenResultShouldBeOk(t *testing.T) {
 
 func TestMapWhenResultIsErrorThenResultShouldBeError(t *testing.T) {
 	t.Parallel()
-	var value result.Result[string, error] = result.Error[string, error]{Err: errors.ErrUnsupported}
+	err := errors.New("unsupported operation")
+	var value result.Result[string, error] = result.Error[string, error]{Err: err}
 	r := result.Map(value, stringToInt)
 	require.IsType(t, result.Error[int64, error]{}, r)
-	assert.IsType(t, errors.ErrUnsupported, r.(result.Error[int64, error]).Err)
+	assert.IsType(t, err, r.(result.Error[int64, error]).Err)
 }
 
 func TestMapResultIsOkAndCallReturnsErrorThenResultShouldBeError(t *testing.T) {

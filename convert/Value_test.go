@@ -1,15 +1,15 @@
-package funcutils_test
+package convert_test
 
 import (
-	"github.com/joaonrb/go-lib/funcutils"
+	"github.com/joaonrb/go-lib/convert"
 	"github.com/stretchr/testify/require"
 	"testing"
 )
 
 func TestValueShouldReturnTheValueOfThePointer(t *testing.T) {
 	t.Parallel()
-	pointer := funcutils.Pointer("João")
-	value := funcutils.Value(pointer)
+	pointer := convert.Pointer("João")
+	value := convert.Value(pointer)
 
 	require.Equal(t, value, *pointer)
 	value += " Nuno"

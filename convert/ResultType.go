@@ -37,13 +37,13 @@ func (rt resultType[T1, T2]) String() (str string) {
 
 			switch value := any(t).(type) {
 			case string, fmt.Stringer:
-				str = fmt.Sprintf("ResultType[%T, %T]{Value: \"%s\"}", value, value2, value)
+				str = fmt.Sprintf("OK[%T, %T]{Value: \"%s\"}", value, value2, value)
 			default:
-				str = fmt.Sprintf("ResultType[%T, %T]{Value: %v}", value, value2, value)
+				str = fmt.Sprintf("OK[%T, %T]{Value: %v}", value, value2, value)
 			}
 		}).
 		WhenError(func(err error) {
-			str = fmt.Sprintf("ResultType[%T, %T]{Err: \"%s\"}", value1, value2, err)
+			str = fmt.Sprintf("Error[%T, %T]{Err: \"%s\"}", value1, value2, err)
 		})
 	return
 }

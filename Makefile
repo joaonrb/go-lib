@@ -4,8 +4,8 @@ GO_FILES := $(shell find . -name '*.go' | grep -v /vendor/ | grep -v _test.go)
 
 .PHONY: \
 	get-dependencies \
-	tests \
-	vtests \
+	test \
+	vtest \
 	format-code \
     lint \
     install-tools \
@@ -14,10 +14,10 @@ GO_FILES := $(shell find . -name '*.go' | grep -v /vendor/ | grep -v _test.go)
 get-dependencies: ## Get binary source dependencies
 	@go mod download
 
-tests: ## Run unit-tests
+test: ## Run unit-test
 	@go test -coverpkg=./... -race -short -coverprofile cov.out ./...
 
-vtests: ## Run verbose unit-tests
+vtest: ## Run verbose unit-test
 	@go test -coverpkg=./... -race -short -coverprofile cov.out -v ./...
 
 coverage: ## Show coverage in html

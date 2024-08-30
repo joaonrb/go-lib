@@ -2,11 +2,12 @@ package convert_test
 
 import (
 	"errors"
+	"testing"
+
 	"github.com/joaonrb/go-lib/convert"
 	"github.com/joaonrb/go-lib/types"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func TestResultToErrorOptionShouldReturnNothingWhenResultIsOK(t *testing.T) {

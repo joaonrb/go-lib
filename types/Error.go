@@ -29,6 +29,10 @@ func (err Error[T]) WhenError(call func(error)) Result[T] {
 	return err
 }
 
+func (err Error[T]) MustValue() T {
+	panic(err.Err)
+}
+
 func (err Error[T]) String() string {
 	var value T
 	return fmt.Sprintf("Error[%T]{Err: \"%v\"}", value, err.Err)

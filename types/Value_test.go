@@ -50,3 +50,10 @@ func TestOptionValueShouldNotExecuteWhenNothingMethod(t *testing.T) {
 		assert.Fail(t, "Value.WhenNothing should not execute")
 	})
 }
+
+func TestOptionValueMustValueShouldReturnTheCorrectValue(t *testing.T) {
+	var test types.Option[int] = types.Value[int]{This: 10}
+	assert.NotPanics(t, func() {
+		assert.Equal(t, 10, test.MustValue(), "Value.MustValue should return 10")
+	})
+}

@@ -49,3 +49,10 @@ func TestOptionNothingShouldExecuteWhenNothingMethod(t *testing.T) {
 	require.IsType(t, types.Value[int]{}, result)
 	assert.Equal(t, 10, result.(types.Value[int]).This)
 }
+
+func TestOptionNothingMustValueShouldExecuteWhenNothingMethod(t *testing.T) {
+	var test types.Option[int] = types.Nothing[int]{}
+	assert.Panics(t, func() {
+		_ = test.MustValue()
+	})
+}

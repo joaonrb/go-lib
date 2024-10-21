@@ -29,6 +29,10 @@ func (ok OK[T]) WhenError(func(error)) Result[T] {
 	return ok
 }
 
+func (ok OK[T]) MustValue() T {
+	return ok.Value
+}
+
 func (ok OK[T]) String() string {
 	var value any = ok.Value
 	switch value := value.(type) {

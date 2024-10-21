@@ -6,4 +6,5 @@ type Result[T any] interface {
 	Error(call func(error) Result[T]) Result[T]
 	WhenOK(call func(T)) Result[T]
 	WhenError(call func(error)) Result[T]
+	MustValue() T
 }

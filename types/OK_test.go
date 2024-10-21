@@ -51,3 +51,10 @@ func TestResultOKShouldNotExecuteWhenErrorMethod(t *testing.T) {
 		assert.Fail(t, "OK.WhenError should not execute")
 	})
 }
+
+func TestResultOKMustValueShouldReturnTheRightValue(t *testing.T) {
+	var test types.Result[int] = types.OK[int]{Value: 10}
+	assert.NotPanics(t, func() {
+		assert.Equal(t, 10, test.MustValue(), "OK.MustValue should return the correct value")
+	})
+}

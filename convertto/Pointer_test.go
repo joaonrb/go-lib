@@ -1,16 +1,16 @@
-package convert_test
+package convertto_test
 
 import (
 	"testing"
 
-	"github.com/joaonrb/go-lib/convert"
+	"github.com/joaonrb/go-lib/convertto"
 	"github.com/stretchr/testify/require"
 )
 
 func TestPointerShouldReturnAPointerOfTheSameValue(t *testing.T) {
 	t.Parallel()
 	value := "João"
-	pointer := convert.Pointer(value)
+	pointer := convertto.Pointer(value)
 	require.Equal(t, value, *pointer)
 	*pointer += " Nuno"
 	require.Equal(t, "João", value)

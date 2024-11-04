@@ -7,15 +7,15 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestRaiseShouldPanicWhenError(t *testing.T) {
+func TestMustNilShouldPanicWhenError(t *testing.T) {
 	err := errors.New("foo")
 	assert.PanicsWithError(t, err.Error(), func() {
-		errors.Raise(err)
+		errors.MustNil(err)
 	})
 }
 
-func TestRaiseShouldNotPanicWhenNil(t *testing.T) {
+func TestMustNilShouldNotPanicWhenNil(t *testing.T) {
 	assert.NotPanics(t, func() {
-		errors.Raise(nil)
+		errors.MustNil(nil)
 	})
 }

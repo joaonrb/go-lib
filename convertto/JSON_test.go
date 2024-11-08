@@ -1,11 +1,12 @@
 package convertto_test
 
 import (
+	"testing"
+	"time"
+
 	"github.com/joaonrb/go-lib/convertto"
 	"github.com/joaonrb/go-lib/types"
 	"github.com/stretchr/testify/assert"
-	"testing"
-	"time"
 )
 
 func TestJSONShouldReturnAJsonLikeStringWhenValueIsAString(t *testing.T) {
@@ -17,7 +18,11 @@ func TestJSONShouldReturnAJsonLikeNumberWhenValueIsANumber(t *testing.T) {
 }
 
 func TestJSONShouldReturnADatetimeWhenValueIsADatetime(t *testing.T) {
-	assertOK(t, `"2024-10-19T12:02:00Z"`, convertto.JSON(time.Date(2024, 10, 19, 12, 2, 0, 0, time.UTC)))
+	assertOK(
+		t,
+		`"2024-10-19T12:02:00Z"`,
+		convertto.JSON(time.Date(2024, 10, 19, 12, 2, 0, 0, time.UTC)),
+	)
 }
 
 type Person struct {
@@ -32,7 +37,11 @@ func TestJSONShouldReturnAObjectWhenValueIsAnObject(t *testing.T) {
 		Age:      28,
 		Birthday: time.Date(1992, 10, 19, 12, 2, 0, 0, time.UTC),
 	}
-	assertOK(t, `{"Name":"David Doe","Age":28,"Birthday":"1992-10-19T12:02:00Z"}`, convertto.JSON(person))
+	assertOK(
+		t,
+		`{"Name":"David Doe","Age":28,"Birthday":"1992-10-19T12:02:00Z"}`,
+		convertto.JSON(person),
+	)
 }
 
 func TestPrettyJSONShouldReturnAObjectWhenValueIsAnObject(t *testing.T) {

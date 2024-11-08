@@ -3,9 +3,10 @@ package rand_test
 import (
 	go_rand "crypto/rand"
 	"encoding/base64"
-	"github.com/joaonrb/go-lib/rand"
 	"math"
 	"testing"
+
+	"github.com/joaonrb/go-lib/rand"
 )
 
 func defaultRandString(n int) string {

@@ -2,6 +2,7 @@ package queue
 
 import (
 	"context"
+
 	"github.com/joaonrb/go-lib/types"
 )
 
@@ -61,13 +62,11 @@ func (queue *Queue[T]) MustPush(value T) types.Result[bool] {
 }
 
 func (queue *Queue[T]) Pop() types.Result[T] {
-	select {
-	case value, open := <-queue.output:
-		if !open {
-			return types.Error[T]{Err: CollectionClosed()}
-		}
-		return types.OK[T]{Value: value}
+	value, open := <-queue.output
+	if !open {
+		return types.Error[T]{Err: CollectionClosed()}
 	}
+	return types.OK[T]{Value: value}
 }
 
 func (queue *Queue[T]) MustPop() types.Option[T] {
@@ -105,13 +104,11 @@ func (queue *Queue[T]) ForEach(ctx context.Context, loop func(index uint64, valu
 }
 
 func (queue *Queue[T]) Flush() types.Result[[]T] {
-	select {
-	case value, open := <-queue.flush:
-		if !open {
-			return types.Error[[]T]{Err: CollectionClosed()}
-		}
-		return types.OK[[]T]{Value: value}
+	value, open := <-queue.flush
+	if !open {
+		return types.Error[[]T]{Err: CollectionClosed()}
 	}
+	return types.OK[[]T]{Value: value}
 }
 
 func (queue *Queue[T]) Length() int {

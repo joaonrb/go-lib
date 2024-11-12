@@ -6,6 +6,7 @@ GO_FILES := $(shell find . -name '*.go' | grep -v /vendor/ | grep -v _test.go)
 	get-dependencies \
 	test \
 	vtest \
+	bench \
 	format-code \
     lint \
     install-tools \
@@ -19,6 +20,9 @@ test: ## Run unit-test
 
 vtest: ## Run verbose unit-test
 	@go test -coverpkg=./... -race -short -coverprofile cov.out -v ./...
+
+bench: ## Benchmarks code
+	@go test -bench=. ./...
 
 coverage: ## Show coverage in html
 	@go tool cover -html=cov.out

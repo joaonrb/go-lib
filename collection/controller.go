@@ -8,11 +8,11 @@ import (
 type controller[T any] struct {
 	context    context.Context
 	collection collection[T]
-	capacity   uint16
+	capacity   uint64
 	input      chan chan T
 	output     chan chan T
 	peek       chan chan T
-	length     chan uint16
+	length     chan uint64
 	flush      chan chan []T
 }
 
@@ -27,7 +27,7 @@ func (ctr *controller[T]) start() {
 
 func (ctr *controller[T]) run() {
 	var (
-		length        uint16
+		length        uint64
 		inputChannel  = ctr.input
 		input         = make(chan T)
 		outputChannel chan chan T

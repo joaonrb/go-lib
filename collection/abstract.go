@@ -12,7 +12,7 @@ type abstract[T any] struct {
 	input   chan chan T
 	output  chan chan T
 	peek    chan chan T
-	length  chan uint16
+	length  chan uint64
 	flush   chan chan []T
 	cancel  context.CancelFunc
 }
@@ -79,7 +79,7 @@ func (abs *abstract[T]) ForEach(ctx context.Context, loop func(index int, value 
 	}
 }
 
-func (abs *abstract[T]) ForN(n uint16, loop func(index int, value T)) {
+func (abs *abstract[T]) ForN(n uint64, loop func(index int, value T)) {
 	ctx, cancel := context.WithCancel(context.Background())
 	nn := int(n)
 	abs.ForEach(ctx, func(index int, value T) {
@@ -99,8 +99,8 @@ func (abs *abstract[T]) Flush() types.Result[[]T] {
 	return types.OK[[]T]{Value: <-value}
 }
 
-func (abs *abstract[T]) Length() int {
-	return int(<-abs.length)
+func (abs *abstract[T]) Length() uint64 {
+	return <-abs.length
 }
 
 func (abs *abstract[T]) IsEmpty() bool {

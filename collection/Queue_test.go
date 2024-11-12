@@ -49,4 +49,7 @@ func pushN(n int, queue *collection.Queue[int]) {
 	for i := 0; i < n; i++ {
 		queue.Push(i)
 	}
+	for !queue.IsEmpty() {
+		queue.Pull()
+	}
 }

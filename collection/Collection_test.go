@@ -36,7 +36,7 @@ func TestCollectionShouldReadElementsWhenElementsArePutOnTheCollection(t *testin
 				clt.Push(value)
 			}
 			assert.False(t, clt.IsEmpty(), "IsEmpty is expected to be false")
-			assert.Equalf(t, len(data), clt.Length(), "Length is expected to be %d", len(data))
+			assert.Equalf(t, uint64(len(data)), clt.Length(), "Length is expected to be %d", len(data))
 			for !clt.IsEmpty() {
 				result := testPull[any](t, clt)
 				requireOK[any](t, result)

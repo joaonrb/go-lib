@@ -3,7 +3,7 @@ package collection
 import "fmt"
 
 // NewQueue creates a first in first out NewQueue with max capacity of 65535.
-func NewQueue[T any](capacity uint16) *Queue[T] {
+func NewQueue[T any](capacity uint64) *Queue[T] {
 	q := &queue[T]{
 		capacity: capacity,
 		elements: make([]T, capacity),
@@ -24,9 +24,9 @@ func (collection *Queue[T]) String() string {
 
 type queue[T any] struct {
 	elements []T
-	lastPull uint16
-	lastPush uint16
-	capacity uint16
+	lastPull uint64
+	lastPush uint64
+	capacity uint64
 }
 
 func (collection *queue[T]) Push(value T) {

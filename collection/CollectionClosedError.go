@@ -1,4 +1,4 @@
-package queue
+package collection
 
 import "github.com/joaonrb/go-lib/errors"
 

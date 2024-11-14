@@ -1,8 +1,9 @@
 package collection_test
 
 import (
-	"github.com/joaonrb/go-lib/collection"
 	"testing"
+
+	"github.com/joaonrb/go-lib/collection"
 )
 
 func BenchmarkIntQueueCapacity10Add5(b *testing.B) {

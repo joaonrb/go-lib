@@ -35,13 +35,17 @@ func (ctr *controller[T]) run() {
 		peekChannel   chan chan T
 		peek          = make(chan T)
 		flush         = make(chan []T)
+		done          = ctr.context.Done()
 	)
-	for running := true; running; {
+	defer func() {
+		close(ctr.input)
+		close(ctr.output)
+		close(ctr.peek)
+		close(ctr.length)
+		close(ctr.flush)
+	}()
+	for running := true; running || length > 0; {
 		select {
-		case <-ctr.context.Done():
-			close(ctr.input)
-			close(ctr.output)
-			running = false
 		case inputChannel <- input:
 			value := <-input
 			ctr.collection.Push(value)
@@ -65,6 +69,9 @@ func (ctr *controller[T]) run() {
 			flush <- ctr.collection.Flush()
 			length = 0
 		case ctr.length <- length:
+		case <-done:
+			running = false
+			done = nil
 		}
 	}
 }

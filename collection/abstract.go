@@ -65,29 +65,37 @@ func (abs *abstract[T]) Peek() types.Option[T] {
 
 func (abs *abstract[T]) ForEach(ctx context.Context, loop func(index int, value T)) {
 	var index int
-	for running := true; running; index++ {
+	for {
+		// First select prevent competing goroutines to compete to read output after context is done
 		select {
 		case <-ctx.Done():
-			running = false
-		case output, open := <-abs.output:
-			if !open {
-				running = false
-			} else {
-				loop(index, <-output)
+			return
+		default:
+			select {
+			case <-ctx.Done():
+				return
+			case output, open := <-abs.output:
+				if !open {
+					return
+				} else {
+					loop(index, <-output)
+					index++
+				}
 			}
 		}
 	}
 }
 
 func (abs *abstract[T]) ForN(n uint64, loop func(index int, value T)) {
+	nn := int(n) - 1
 	ctx, cancel := context.WithCancel(context.Background())
-	nn := int(n)
 	abs.ForEach(ctx, func(index int, value T) {
-		defer cancel()
+		loop(index, value)
 		if index == nn {
+			fmt.Println("cancel", index, value)
+			cancel()
 			return
 		}
-		loop(index, value)
 	})
 }
 

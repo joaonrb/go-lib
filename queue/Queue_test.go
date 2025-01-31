@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/joaonrb/go-lib/types"
+	"github.com/joaonrb/go-lib/monad"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -155,7 +155,7 @@ func TestQueueShouldLoopOverAllElementsInTheCollection(t *testing.T) {
 			clt.Close()
 			loops := 0
 			clt.ForEach(context.Background(), func(index int, value any) {
-				assert.Contains(t, dataMap, value, "Value %v is expected to be in data", value)
+				assert.Contains(t, dataMap, value, "Some %v is expected to be in data", value)
 				length := len(data) - index - 1
 				assert.Equalf(t, length, int(clt.Length()), "Length is expected to be %d", length)
 				loops++
@@ -181,7 +181,7 @@ func TestQueueShouldLoopOverNElementsInTheCollection(t *testing.T) {
 			clt.Close()
 			clt.ForN(3, func(index int, value any) {
 				fmt.Println(index, value)
-				assert.Contains(t, dataMap, value, "Value %v is expected to be in data", value)
+				assert.Contains(t, dataMap, value, "Some %v is expected to be in data", value)
 				length := len(data) - index - 1
 				assert.Equalf(t, length, int(clt.Length()), "Length is expected to be %d", length)
 			})
@@ -191,9 +191,9 @@ func TestQueueShouldLoopOverNElementsInTheCollection(t *testing.T) {
 	}
 }
 
-func testPull[T any](t *testing.T, queue *queue.Queue[T]) types.Result[T] {
-	var result types.Result[T]
-	c := make(chan types.Result[T])
+func testPull[T any](t *testing.T, queue *queue.Queue[T]) monad.Result[T] {
+	var result monad.Result[T]
+	c := make(chan monad.Result[T])
 	go func() {
 		c <- queue.Pull()
 	}()
@@ -208,5 +208,5 @@ func testPull[T any](t *testing.T, queue *queue.Queue[T]) types.Result[T] {
 }
 
 func requireOK[T any](t *testing.T, result any) {
-	require.IsTypef(t, types.OK[T]{}, result, "Pull result %s is expected to be OK[any]", result)
+	require.IsTypef(t, monad.OK[T]{}, result, "Pull result %s is expected to be OK[any]", result)
 }

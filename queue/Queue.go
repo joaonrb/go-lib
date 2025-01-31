@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/joaonrb/go-lib/types"
+	"github.com/joaonrb/go-lib/monad"
 )
 
 // New creates a first in first out New with max capacity of 65535.
@@ -57,50 +57,50 @@ type Queue[T any] struct {
 	cancel  context.CancelFunc
 }
 
-func (queue *Queue[T]) Push(value T) types.Option[error] {
+func (queue *Queue[T]) Push(value T) monad.Maybe[error] {
 	select {
 	case <-queue.context.Done():
-		return types.Value[error]{This: NewQueueClosedError()}
+		return monad.Some[error]{Value: NewQueueClosedError()}
 	case input := <-queue.input:
 		input <- value
-		return types.Nothing[error]{}
+		return monad.Nothing[error]{}
 	}
 }
 
-func (queue *Queue[T]) MustPush(value T) types.Result[bool] {
+func (queue *Queue[T]) MustPush(value T) monad.Result[bool] {
 	select {
 	case <-queue.context.Done():
-		return types.Error[bool]{Err: NewQueueClosedError()}
+		return monad.Error[bool]{Err: NewQueueClosedError()}
 	case input := <-queue.input:
 		input <- value
-		return types.OK[bool]{Value: true}
+		return monad.OK[bool]{Value: true}
 	default:
-		return types.OK[bool]{Value: false}
+		return monad.OK[bool]{Value: false}
 	}
 }
 
-func (queue *Queue[T]) Pull() types.Result[T] {
+func (queue *Queue[T]) Pull() monad.Result[T] {
 	output, open := <-queue.output
 	if !open {
-		return types.Error[T]{Err: NewQueueClosedError()}
+		return monad.Error[T]{Err: NewQueueClosedError()}
 	}
-	return types.OK[T]{Value: <-output}
+	return monad.OK[T]{Value: <-output}
 }
 
-func (queue *Queue[T]) MustPull() types.Option[T] {
+func (queue *Queue[T]) MustPull() monad.Maybe[T] {
 	output, open := <-queue.output
 	if open {
-		return types.Value[T]{This: <-output}
+		return monad.Some[T]{Value: <-output}
 	}
-	return types.Nothing[T]{}
+	return monad.Nothing[T]{}
 }
 
-func (queue *Queue[T]) Peek() types.Option[T] {
+func (queue *Queue[T]) Peek() monad.Maybe[T] {
 	output, open := <-queue.peek
 	if open {
-		return types.Value[T]{This: <-output}
+		return monad.Some[T]{Value: <-output}
 	}
-	return types.Nothing[T]{}
+	return monad.Nothing[T]{}
 }
 
 func (queue *Queue[T]) ForEach(ctx context.Context, loop func(index int, value T)) {
@@ -139,12 +139,12 @@ func (queue *Queue[T]) ForN(n uint64, loop func(index int, value T)) {
 	})
 }
 
-func (queue *Queue[T]) Flush() types.Result[[]T] {
+func (queue *Queue[T]) Flush() monad.Result[[]T] {
 	value, open := <-queue.flush
 	if !open {
-		return types.Error[[]T]{Err: NewQueueClosedError()}
+		return monad.Error[[]T]{Err: NewQueueClosedError()}
 	}
-	return types.OK[[]T]{Value: <-value}
+	return monad.OK[[]T]{Value: <-value}
 }
 
 func (queue *Queue[T]) Length() uint64 {

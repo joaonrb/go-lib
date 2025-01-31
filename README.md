@@ -6,9 +6,9 @@ every time I work on a new project.
 
 ## Modules
 
-### types
-A modules with support types, most notably, my implementation of the **result**
-and the **option** monads in go. 
+### monad
+A modules with support monad, most notably, my implementation of the **result**
+and the **maybe** monads in go. 
 
 ### convert and converto
 Functions to convert values to pointers, ponters to values or conversion between

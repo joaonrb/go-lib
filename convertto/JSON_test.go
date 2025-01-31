@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/joaonrb/go-lib/convertto"
-	"github.com/joaonrb/go-lib/types"
+	"github.com/joaonrb/go-lib/monad"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -58,7 +58,7 @@ func TestPrettyJSONShouldReturnAObjectWhenValueIsAnObject(t *testing.T) {
 	assertOK(t, expected, convertto.PrettyJSON(person))
 }
 
-func assertOK[T any](t *testing.T, expected any, result types.Result[T]) {
-	assert.IsType(t, types.OK[T]{}, result, "result not from type OK")
-	assert.Equal(t, expected, result.(types.OK[T]).Value, "value does not match the expected")
+func assertOK[T any](t *testing.T, expected any, result monad.Result[T]) {
+	assert.IsType(t, monad.OK[T]{}, result, "result not from type OK")
+	assert.Equal(t, expected, result.(monad.OK[T]).Value, "value does not match the expected")
 }

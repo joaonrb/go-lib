@@ -3,11 +3,12 @@ package queue_test
 import (
 	"context"
 	"fmt"
+	"testing"
+	"time"
+
 	"github.com/joaonrb/go-lib/types"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
-	"time"
 
 	"github.com/joaonrb/go-lib/queue"
 )

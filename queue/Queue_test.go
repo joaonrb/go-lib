@@ -1,20 +1,69 @@
-package collection_test
+package queue_test
 
 import (
 	"context"
 	"fmt"
-	"testing"
-	"time"
-
-	"github.com/joaonrb/go-lib/collection"
 	"github.com/joaonrb/go-lib/types"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"testing"
+	"time"
+
+	"github.com/joaonrb/go-lib/queue"
 )
+
+func BenchmarkIntQueueCapacity10Add5(b *testing.B) {
+	pushN(5, queue.New[int](10))
+}
+
+func BenchmarkIntQueueCapacity10Add10(b *testing.B) {
+	pushN(10, queue.New[int](10))
+}
+
+func BenchmarkIntQueueCapacity100Add10(b *testing.B) {
+	pushN(10, queue.New[int](100))
+}
+
+func BenchmarkIntQueueCapacity100Add25(b *testing.B) {
+	pushN(25, queue.New[int](100))
+}
+
+func BenchmarkIntQueueCapacity100Add50(b *testing.B) {
+	pushN(50, queue.New[int](100))
+}
+
+func BenchmarkIntQueueCapacity100Add100(b *testing.B) {
+	pushN(100, queue.New[int](100))
+}
+
+func BenchmarkIntQueueCapacity1000Add100(b *testing.B) {
+	pushN(500, queue.New[int](1000))
+}
+
+func BenchmarkIntQueueCapacity1000Add1000(b *testing.B) {
+	pushN(1000, queue.New[int](1000))
+}
+
+func BenchmarkIntQueueCapacity10000Add1000(b *testing.B) {
+	pushN(1000, queue.New[int](10000))
+}
+
+func BenchmarkIntQueueCapacity10000Add10000(b *testing.B) {
+	pushN(10000, queue.New[int](10000))
+}
+
+func pushN(n int, queue *queue.Queue[int]) {
+	for i := 0; i < n; i++ {
+		queue.Push(i)
+	}
+	for !queue.IsEmpty() {
+		queue.Pull()
+	}
+}
 
 type QueueTestData struct {
 	Name       string
-	collection collection.Collection[any]
+	collection *queue.Queue[any]
 }
 
 var (
@@ -34,10 +83,10 @@ var (
 	}
 )
 
-func TestCollectionShouldPullElementsWhenElementsWerePushedToTheCollection(t *testing.T) {
+func TestQueueShouldPullElementsWhenElementsWerePushedToTheCollection(t *testing.T) {
 	tests := []QueueTestData{
-		{"NewQueue collection size 5", collection.NewQueue[any](5)},
-		{"NewQueue collection size 10", collection.NewQueue[any](10)},
+		{"New collection size 5", queue.New[any](5)},
+		{"New collection size 10", queue.New[any](10)},
 	}
 
 	for _, test := range tests {
@@ -71,9 +120,9 @@ func TestCollectionShouldPullElementsWhenElementsWerePushedToTheCollection(t *te
 	}
 }
 
-func TestCollectionMustPushShouldReturnFalseWhenCollectionIsFull(t *testing.T) {
+func TestQueueMustPushShouldReturnFalseWhenCollectionIsFull(t *testing.T) {
 	tests := []QueueTestData{
-		{"NewQueue collection size 3", collection.NewQueue[any](3)},
+		{"New collection size 3", queue.New[any](3)},
 	}
 	for _, test := range tests {
 		t.Run(test.Name, func(t *testing.T) {
@@ -90,10 +139,10 @@ func TestCollectionMustPushShouldReturnFalseWhenCollectionIsFull(t *testing.T) {
 	}
 }
 
-func TestCollectionShouldLoopOverAllElementsInTheCollection(t *testing.T) {
+func TestQueueShouldLoopOverAllElementsInTheCollection(t *testing.T) {
 	tests := []QueueTestData{
-		{"NewQueue collection size 5", collection.NewQueue[any](5)},
-		{"NewQueue collection size 10", collection.NewQueue[any](10)},
+		{"New collection size 5", queue.New[any](5)},
+		{"New collection size 10", queue.New[any](10)},
 	}
 
 	for _, test := range tests {
@@ -116,10 +165,10 @@ func TestCollectionShouldLoopOverAllElementsInTheCollection(t *testing.T) {
 	}
 }
 
-func TestCollectionShouldLoopOverNElementsInTheCollection(t *testing.T) {
+func TestQueueShouldLoopOverNElementsInTheCollection(t *testing.T) {
 	tests := []QueueTestData{
-		{"NewQueue collection size 5", collection.NewQueue[any](5)},
-		{"NewQueue collection size 10", collection.NewQueue[any](10)},
+		{"New collection size 5", queue.New[any](5)},
+		{"New collection size 10", queue.New[any](10)},
 	}
 
 	for _, test := range tests {
@@ -141,11 +190,11 @@ func TestCollectionShouldLoopOverNElementsInTheCollection(t *testing.T) {
 	}
 }
 
-func testPull[T any](t *testing.T, clt collection.Collection[T]) types.Result[T] {
+func testPull[T any](t *testing.T, queue *queue.Queue[T]) types.Result[T] {
 	var result types.Result[T]
 	c := make(chan types.Result[T])
 	go func() {
-		c <- clt.Pull()
+		c <- queue.Pull()
 	}()
 	require.Eventually(t, func() bool {
 		select {

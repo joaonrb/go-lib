@@ -1,4 +1,4 @@
-package collection
+package queue
 
 import (
 	"context"
@@ -6,14 +6,14 @@ import (
 )
 
 type controller[T any] struct {
-	context    context.Context
-	collection collection[T]
-	capacity   uint64
-	input      chan chan T
-	output     chan chan T
-	peek       chan chan T
-	length     chan uint64
-	flush      chan chan []T
+	context   context.Context
+	container *container[T]
+	capacity  uint64
+	input     chan chan T
+	output    chan chan T
+	peek      chan chan T
+	length    chan uint64
+	flush     chan chan []T
 }
 
 func (ctr *controller[T]) String() string {
@@ -48,7 +48,7 @@ func (ctr *controller[T]) run() {
 		select {
 		case inputChannel <- input:
 			value := <-input
-			ctr.collection.Push(value)
+			ctr.container.Push(value)
 			length++
 			outputChannel = ctr.output
 			peekChannel = ctr.peek
@@ -56,7 +56,7 @@ func (ctr *controller[T]) run() {
 				inputChannel = nil
 			}
 		case outputChannel <- output:
-			output <- ctr.collection.Pull()
+			output <- ctr.container.Pull()
 			length--
 			inputChannel = ctr.input
 			if length == 0 {
@@ -64,9 +64,9 @@ func (ctr *controller[T]) run() {
 				peekChannel = nil
 			}
 		case peekChannel <- peek:
-			peek <- ctr.collection.Peek()
+			peek <- ctr.container.Peek()
 		case ctr.flush <- flush:
-			flush <- ctr.collection.Flush()
+			flush <- ctr.container.Flush()
 			length = 0
 		case ctr.length <- length:
 		case <-done:

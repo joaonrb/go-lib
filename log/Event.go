@@ -31,8 +31,8 @@ func newEvent(level Level, logger *Logger, message string, args ...any) *Event {
 func (event *Event) String() string {
 	return fmt.Sprintf(
 		"Event{Name: %s, Message: %s, Level: %s}",
-		convertto.JSON(event.Name()).MustValue(),
-		convertto.JSON(event.message).MustValue(),
+		convertto.JSON(event.Name()).TryValue(),
+		convertto.JSON(event.message).TryValue(),
 		event.level.String(),
 	)
 }

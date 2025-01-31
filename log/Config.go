@@ -17,7 +17,7 @@ type Config struct {
 func (config Config) String() string {
 	return fmt.Sprintf(
 		"Config{Name: %s, Level: %s, Formatter: %s, Writer: %s, PanicOnError: %t}",
-		convertto.JSON(config.Name).MustValue(),
+		convertto.JSON(config.Name).TryValue(),
 		config.Level,
 		config.Formatter,
 		config.Writer,

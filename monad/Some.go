@@ -33,6 +33,11 @@ func (some Some[T]) Or(T) Maybe[T] {
 	return some
 }
 
+func (some Some[T]) Is(value T) bool {
+	var s, t any = some.Value, value
+	return s == t
+}
+
 func (some Some[T]) TryValue() T {
 	return some.Value
 }

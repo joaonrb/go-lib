@@ -31,6 +31,10 @@ func (nothing Nothing[T]) Or(value T) Maybe[T] {
 	return Some[T]{Value: value}
 }
 
+func (nothing Nothing[T]) Is(value T) bool {
+	return false
+}
+
 func (Nothing[T]) TryValue() T {
 	panic(NewMaybeIsNothingError())
 }

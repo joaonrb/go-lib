@@ -1,16 +1,17 @@
-package convertto_test
+package convert_test
 
 import (
 	"testing"
 
-	"github.com/joaonrb/go-lib/convertto"
+	"github.com/joaonrb/go-lib/convert"
+
 	"github.com/stretchr/testify/require"
 )
 
-func TestValueShouldReturnTheValueOfThePointer(t *testing.T) {
+func TestToValueShouldReturnTheValueOfThePointer(t *testing.T) {
 	t.Parallel()
-	pointer := convertto.Pointer("João")
-	value := convertto.Value(pointer)
+	pointer := convert.ToPointer("João")
+	value := convert.ToValue(pointer)
 
 	require.Equal(t, value, *pointer)
 	value += " Nuno"

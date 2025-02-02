@@ -2,8 +2,6 @@ package log
 
 import (
 	"fmt"
-
-	"github.com/joaonrb/go-lib/convertto"
 )
 
 type Config struct {
@@ -16,8 +14,8 @@ type Config struct {
 
 func (config Config) String() string {
 	return fmt.Sprintf(
-		"Config{Name: %s, Level: %s, Formatter: %s, Writer: %s, PanicOnError: %t}",
-		convertto.JSON(config.Name).TryValue(),
+		"Config{Name: \"%s\", Level: %s, Formatter: %s, Writer: %s, PanicOnError: %t}",
+		config.Name,
 		config.Level,
 		config.Formatter,
 		config.Writer,

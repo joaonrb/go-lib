@@ -33,6 +33,15 @@ func (ok OK[T]) Or(T) Result[T] {
 	return ok
 }
 
+func (ok OK[T]) Is(value T) bool {
+	var s, t any = ok.Value, value
+	return s == t
+}
+
+func (ok OK[T]) IsError(error) bool {
+	return false
+}
+
 func (ok OK[T]) TryValue() T {
 	return ok.Value
 }

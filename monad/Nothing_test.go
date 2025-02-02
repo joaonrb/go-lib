@@ -50,9 +50,14 @@ func TestMaybeNothingShouldExecuteWhenNothingMethod(t *testing.T) {
 	assert.Equal(t, 10, result.(monad.Some[int]).Value)
 }
 
-func TestMaybeNothingMustValueShouldExecuteWhenNothingMethod(t *testing.T) {
+func TestMaybeNothingTryValueShouldExecuteWhenNothingMethod(t *testing.T) {
 	var test monad.Maybe[int] = monad.Nothing[int]{}
 	assert.Panics(t, func() {
 		_ = test.TryValue()
 	})
+}
+
+func TestMaybeNothingIsShouldReturnFalse(t *testing.T) {
+	var test monad.Maybe[int] = monad.Nothing[int]{}
+	assert.False(t, test.Is(10))
 }

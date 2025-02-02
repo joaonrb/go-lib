@@ -65,3 +65,18 @@ func TestResultOKTryErrorShouldRaiseAnError(t *testing.T) {
 		assert.Equal(t, 10, test.TryError(), "OK.TryError should panic")
 	})
 }
+
+func TestResultOKIsShouldReturnTrueWhenUseTheSameValue(t *testing.T) {
+	var test monad.Result[int] = monad.OK[int]{Value: 10}
+	assert.True(t, test.Is(10))
+}
+
+func TestResultOKIsShouldReturnFalseWhenUseTheDifferentValue(t *testing.T) {
+	var test monad.Result[int] = monad.OK[int]{Value: 10}
+	assert.False(t, test.Is(11))
+}
+
+func TestResultOKIsErrorShouldReturnFalse(t *testing.T) {
+	var test monad.Result[int] = monad.OK[int]{Value: 10}
+	assert.False(t, test.IsError(nil))
+}

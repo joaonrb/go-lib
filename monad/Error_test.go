@@ -62,3 +62,21 @@ func TestResultErrorTryErrorShouldReturnTheError(t *testing.T) {
 	var test monad.Result[int] = monad.Error[int]{Err: err}
 	assert.ErrorAs(t, test.TryError(), &err)
 }
+
+func TestResultErrorIsShouldReturnFalse(t *testing.T) {
+	err := errors.New("foo")
+	var test monad.Result[int] = monad.Error[int]{Err: err}
+	assert.False(t, test.Is(10))
+}
+
+func TestResultErrorIsErrorShouldReturnTrueWhenUseTheSameError(t *testing.T) {
+	err := errors.New("foo")
+	var test monad.Result[int] = monad.Error[int]{Err: err}
+	assert.True(t, test.IsError(err))
+}
+
+func TestResultErrorIsErrorShouldReturnFalseWhenUseDifferentError(t *testing.T) {
+	err := errors.New("foo")
+	var test monad.Result[int] = monad.Error[int]{Err: err}
+	assert.False(t, test.IsError(errors.New("bar")))
+}

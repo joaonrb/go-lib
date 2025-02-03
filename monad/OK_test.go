@@ -76,7 +76,32 @@ func TestResultOKIsShouldReturnFalseWhenUseTheDifferentValue(t *testing.T) {
 	assert.False(t, test.Is(11))
 }
 
+func TestResultOKIsInShouldReturnTrueWhenHaveAnyEqualValue(t *testing.T) {
+	var test monad.Result[int] = monad.OK[int]{Value: 10}
+	assert.True(t, test.IsIn(1, 2, 3, 4, 5, 10))
+}
+
+func TestResultOKIsShouldReturnFalseWhenDoesNotHaveAnyEqualValue(t *testing.T) {
+	var test monad.Result[int] = monad.OK[int]{Value: 10}
+	assert.False(t, test.IsIn(1, 2, 3, 4, 5))
+}
+
 func TestResultOKIsErrorShouldReturnFalse(t *testing.T) {
 	var test monad.Result[int] = monad.OK[int]{Value: 10}
-	assert.False(t, test.IsError(nil))
+	assert.False(t, test.IsError(errors.New("foo")))
+}
+
+func TestResultOKIsErrorInShouldReturnFalse(t *testing.T) {
+	var test monad.Result[int] = monad.OK[int]{Value: 10}
+	assert.False(t, test.IsErrorIn(errors.New("foo"), errors.New("bar")))
+}
+
+func TestResultOKAsErrorShouldReturnFalse(t *testing.T) {
+	var test monad.Result[int] = monad.OK[int]{Value: 10}
+	assert.False(t, test.AsError(errors.New("foo")))
+}
+
+func TestResultOKAsErrorInShouldReturnFalse(t *testing.T) {
+	var test monad.Result[int] = monad.OK[int]{Value: 10}
+	assert.False(t, test.AsErrorIn(errors.New("foo"), errors.New("bar")))
 }

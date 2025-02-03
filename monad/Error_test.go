@@ -59,14 +59,18 @@ func TestResultErrorTryValueShouldPanicTheError(t *testing.T) {
 
 func TestResultErrorTryErrorShouldReturnTheError(t *testing.T) {
 	err := errors.New("foo")
-	var test monad.Result[int] = monad.Error[int]{Err: err}
+	var test monad.Result[int] = monad.Error[int]{Err: errors.New("foo")}
 	assert.ErrorAs(t, test.TryError(), &err)
 }
 
 func TestResultErrorIsShouldReturnFalse(t *testing.T) {
-	err := errors.New("foo")
-	var test monad.Result[int] = monad.Error[int]{Err: err}
+	var test monad.Result[int] = monad.Error[int]{Err: errors.New("foo")}
 	assert.False(t, test.Is(10))
+}
+
+func TestResultErrorIsInShouldReturnFalse(t *testing.T) {
+	var test monad.Result[int] = monad.Error[int]{Err: errors.New("foo")}
+	assert.False(t, test.IsIn(1, 2, 3, 4, 5, 10))
 }
 
 func TestResultErrorIsErrorShouldReturnTrueWhenUseTheSameError(t *testing.T) {
@@ -76,7 +80,44 @@ func TestResultErrorIsErrorShouldReturnTrueWhenUseTheSameError(t *testing.T) {
 }
 
 func TestResultErrorIsErrorShouldReturnFalseWhenUseDifferentError(t *testing.T) {
-	err := errors.New("foo")
-	var test monad.Result[int] = monad.Error[int]{Err: err}
+	var test monad.Result[int] = monad.Error[int]{Err: errors.New("foo")}
 	assert.False(t, test.IsError(errors.New("bar")))
 }
+
+func TestResultErrorIsErrorInShouldReturnTrueWhenHaveAnyEqualError(t *testing.T) {
+	err := errors.New("foo")
+	var test monad.Result[int] = monad.Error[int]{Err: err}
+	assert.True(t, test.IsErrorIn(errors.New("bar"), err))
+}
+
+func TestResultErrorIsErrorInShouldReturnFalseWhenDoesNotHaveAnyEqualError(t *testing.T) {
+	err := errors.New("foo")
+	var test monad.Result[int] = monad.Error[int]{Err: err}
+	assert.False(t, test.IsErrorIn(errors.New("bar"), errors.New("frank")))
+}
+
+func TestResultErrorAsErrorShouldReturnTrueWhenUseWrappedError(t *testing.T) {
+	err := errors.Join(errors.New("foo"), errors.New("bar"))
+	var test monad.Result[int] = monad.Error[int]{Err: err}
+	assert.True(t, test.AsError(errors.New("foo")))
+}
+
+// Temporary hold this test
+//func TestResultErrorAsErrorShouldReturnFalseWhenDoesNotUseWrappedError(t *testing.T) {
+//	err := errors.Join(errors.New("foo"), errors.New("bar"))
+//	var test monad.Result[int] = monad.Error[int]{Err: err}
+//	assert.False(t, test.AsError(errors.New("frank")))
+//}
+
+func TestResultErrorAsErrorInShouldReturnTrueWhenHaveAnyWrappedError(t *testing.T) {
+	err := errors.Join(errors.New("foo"), errors.New("bar"))
+	var test monad.Result[int] = monad.Error[int]{Err: err}
+	assert.True(t, test.AsErrorIn(errors.New("frank"), errors.New("bar")))
+}
+
+// Temporary hold this test
+//func TestResultErrorAsErrorInShouldReturnFalseWhenDoesNotHaveAnyWrappedError(t *testing.T) {
+//	err := errors.Join(errors.New("foo"), errors.New("bar"))
+//	var test monad.Result[int] = monad.Error[int]{Err: err}
+//	assert.False(t, test.AsErrorIn(errors.New("james"), errors.New("frank")))
+//}

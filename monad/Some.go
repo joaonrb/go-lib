@@ -38,27 +38,15 @@ func (some Some[T]) Is(value T) bool {
 	return s == t
 }
 
-func (some Some[T]) IsNot(value T) bool {
-	var s, t any = some.Value, value
-	return s != t
-}
-
 func (some Some[T]) IsIn(values ...T) bool {
-	var s, t any = some.Value, nil
+	var (
+		s any = some.Value
+		t any
+	)
 	result := false
 	for i := 0; !result && i < len(values); i++ {
 		t = values[i]
 		result = result || s == t
-	}
-	return result
-}
-
-func (some Some[T]) IsNotIn(values ...T) bool {
-	var s, t any = some.Value, nil
-	result := true
-	for i := 0; result && i < len(values); i++ {
-		t = values[i]
-		result = result && s != t
 	}
 	return result
 }

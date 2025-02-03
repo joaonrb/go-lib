@@ -34,12 +34,38 @@ func (err Error[T]) Or(value T) Result[T] {
 	return OK[T]{Value: value}
 }
 
-func (err Error[T]) Is(value T) bool {
+func (err Error[T]) Is(T) bool {
+	return false
+}
+
+func (err Error[T]) IsIn(...T) bool {
 	return false
 }
 
 func (err Error[T]) IsError(value error) bool {
 	return errors.Is(value, err.Err)
+}
+
+func (err Error[T]) IsErrorIn(values ...error) bool {
+	result := false
+	for i := 0; !result && i < len(values); i++ {
+		e := values[i]
+		result = result || errors.Is(err.Err, e)
+	}
+	return result
+}
+
+func (err Error[T]) AsError(value any) bool {
+	return errors.As(err.Err, &value)
+}
+
+func (err Error[T]) AsErrorIn(values ...any) bool {
+	result := false
+	for i := 0; !result && i < len(values); i++ {
+		e := values[i]
+		result = result || errors.As(err.Err, &e)
+	}
+	return result
 }
 
 func (err Error[T]) TryValue() T {

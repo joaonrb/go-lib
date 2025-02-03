@@ -8,6 +8,9 @@ type Maybe[T any] interface {
 	WhenNothing(call func()) Maybe[T]
 	Or(value T) Maybe[T]
 	Is(value T) bool
+	IsNot(value T) bool
+	IsIn(value ...T) bool
+	IsNotIn(value ...T) bool
 	TryValue() T
 }
 

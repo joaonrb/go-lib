@@ -7,8 +7,8 @@ type Maybe[T any] interface {
 	WhenValue(call func(T)) Maybe[T]
 	WhenNothing(call func()) Maybe[T]
 	Or(value T) Maybe[T]
-	Is(value T) bool
-	IsIn(value ...T) bool
+	If(comparator Comparator[T]) bool
+	DoIf(comparator Comparator[T], do func(T) Maybe[T]) Maybe[T]
 	TryValue() T
 }
 

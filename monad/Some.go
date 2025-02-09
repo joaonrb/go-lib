@@ -33,22 +33,15 @@ func (some Some[T]) Or(T) Maybe[T] {
 	return some
 }
 
-func (some Some[T]) Is(value T) bool {
-	var s, t any = some.Value, value
-	return s == t
+func (some Some[T]) If(comparator Comparator[T]) bool {
+	return comparator(some.Value)
 }
 
-func (some Some[T]) IsIn(values ...T) bool {
-	var (
-		s any = some.Value
-		t any
-	)
-	result := false
-	for i := 0; !result && i < len(values); i++ {
-		t = values[i]
-		result = result || s == t
+func (some Some[T]) DoIf(comparator Comparator[T], do func(T) Maybe[T]) Maybe[T] {
+	if some.If(comparator) {
+		return do(some.Value)
 	}
-	return result
+	return some
 }
 
 func (some Some[T]) TryValue() T {

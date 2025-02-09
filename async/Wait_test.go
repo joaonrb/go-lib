@@ -1,9 +1,10 @@
 package async_test
 
 import (
+	"testing"
+
 	"github.com/joaonrb/go-lib/async"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestWaitShouldReturnFuturesAsTheyFinish(t *testing.T) {
@@ -37,7 +38,12 @@ func TestWaitShouldReturnFuturesAsTheyFinish(t *testing.T) {
 
 }
 
-func assertWaitReturnsN(t *testing.T, n int, channels []chan int, channel <-chan async.Future[int]) {
+func assertWaitReturnsN(
+	t *testing.T,
+	n int,
+	channels []chan int,
+	channel <-chan async.Future[int],
+) {
 	go func() { channels[n] <- 0 }()
 	assert.Equal(t, n, (<-channel).MustValue().TryValue())
 }

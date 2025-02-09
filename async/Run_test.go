@@ -1,12 +1,13 @@
 package async_test
 
 import (
+	"testing"
+	"time"
+
 	"github.com/joaonrb/go-lib/async"
 	"github.com/joaonrb/go-lib/monad"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
-	"time"
 )
 
 func TestRunShouldReleaseRightAwayAfterBeingCalled(t *testing.T) {

@@ -1,9 +1,10 @@
 package atomic_test
 
 import (
+	"testing"
+
 	"github.com/joaonrb/go-lib/atomic"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestValueSetShouldSetValue(t *testing.T) {

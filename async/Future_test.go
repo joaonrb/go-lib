@@ -1,10 +1,11 @@
 package async_test
 
 import (
-	"github.com/joaonrb/go-lib/async"
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
+
+	"github.com/joaonrb/go-lib/async"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestFutureValueShouldPanicIfFutureIsNotStarted(t *testing.T) {

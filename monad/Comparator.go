@@ -49,9 +49,22 @@ func LessOrEqual[T cmp.Ordered](other T) Comparator[T] {
 
 func In[T any](others ...T) Comparator[T] {
 	return func(value T) bool {
-		var v, other any = value, nil
-		for _, other = range others {
-			if v == other {
+		var (
+			v          any = value
+			comparator Comparator[T]
+		)
+		equatable, ok := v.(Equatable[T])
+		if ok {
+			comparator = func(t T) bool {
+				return equatable.Equal(t)
+			}
+		} else {
+			comparator = func(t T) bool {
+				return v == toAny(t)
+			}
+		}
+		for _, other := range others {
+			if comparator(other) {
 				return true
 			}
 		}

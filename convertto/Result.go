@@ -3,28 +3,28 @@ package convertto
 import (
 	"fmt"
 
-	"github.com/joaonrb/go-lib/types"
+	"github.com/joaonrb/go-lib/monad"
 )
 
-func Result[T1 any, T2 any](result types.Result[T1]) ResultConverter[T1, T2] {
+func Result[T1 any, T2 any](result monad.Result[T1]) ResultConverter[T1, T2] {
 	return resultConverter[T1, T2]{Result: result}
 }
 
 type ResultConverter[T1 any, T2 any] interface {
-	Then(call func(T1) types.Result[T2]) types.Result[T2]
+	Then(call func(T1) monad.Result[T2]) monad.Result[T2]
 }
 
 type resultConverter[T1 any, T2 any] struct {
-	Result types.Result[T1]
+	Result monad.Result[T1]
 }
 
-func (rc resultConverter[T1, T2]) Then(call func(T1) types.Result[T2]) (result types.Result[T2]) {
+func (rc resultConverter[T1, T2]) Then(call func(T1) monad.Result[T2]) (result monad.Result[T2]) {
 	rc.Result.
 		WhenOK(func(t T1) {
 			result = call(t)
 		}).
 		WhenError(func(err error) {
-			result = types.Error[T2]{Err: err}
+			result = monad.Error[T2]{Err: err}
 		})
 	return
 }
@@ -38,9 +38,9 @@ func (rc resultConverter[T1, T2]) String() (str string) {
 
 			switch value := any(t).(type) {
 			case string, fmt.Stringer:
-				str = fmt.Sprintf("OK[%T, %T]{Value: \"%s\"}", value, value2, value)
+				str = fmt.Sprintf("OK[%T, %T]{Some: \"%s\"}", value, value2, value)
 			default:
-				str = fmt.Sprintf("OK[%T, %T]{Value: %v}", value, value2, value)
+				str = fmt.Sprintf("OK[%T, %T]{Some: %v}", value, value2, value)
 			}
 		}).
 		WhenError(func(err error) {

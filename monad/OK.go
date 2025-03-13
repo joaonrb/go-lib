@@ -1,4 +1,4 @@
-package types
+package monad
 
 import (
 	"fmt"
@@ -45,8 +45,8 @@ func (ok OK[T]) String() string {
 	var value any = ok.Value
 	switch value := value.(type) {
 	case string, fmt.Stringer:
-		return fmt.Sprintf("OK[%T]{Value: \"%s\"}", value, value)
+		return fmt.Sprintf("OK[%T]{Some: \"%s\"}", value, value)
 	default:
-		return fmt.Sprintf("OK[%T]{Value: %v}", value, value)
+		return fmt.Sprintf("OK[%T]{Some: %v}", value, value)
 	}
 }

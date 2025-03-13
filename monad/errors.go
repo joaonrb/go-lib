@@ -1,15 +1,15 @@
-package types
+package monad
 
 import "github.com/joaonrb/go-lib/errors"
 
 type inner = errors.Error
 
-type OptionIsNothingError struct {
+type MaybeIsNothingError struct {
 	inner
 }
 
-func NewOptionsIsNothingError() OptionIsNothingError {
-	return OptionIsNothingError{inner: errors.New("option is nothing")}
+func NewMaybeIsNothingError() MaybeIsNothingError {
+	return MaybeIsNothingError{inner: errors.New("maybe is nothing")}
 }
 
 type ResultIsOkError struct {

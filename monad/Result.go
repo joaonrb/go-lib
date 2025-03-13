@@ -1,4 +1,4 @@
-package types
+package monad
 
 type Result[T any] interface {
 	result()

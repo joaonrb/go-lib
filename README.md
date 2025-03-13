@@ -24,4 +24,10 @@ Simple log framework that allows to customise format and input.
 Fast string generator.
 
 ### queue
-A first in first out thread safe queue
+A first in first out thread safe queue.
+
+### atomic
+Implement an atomic value.
+
+### async
+Implement async/await functionality.

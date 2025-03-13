@@ -58,7 +58,6 @@ func TestCollectionMustPutShouldReturnFalseWhenCollectionIsFull(t *testing.T) {
 	tests := []QueueTestData{
 		{"NewQueue collection size 3", collection.NewQueue[any](3)},
 	}
-
 	for _, test := range tests {
 		t.Run(test.Name, func(t *testing.T) {
 			clt := test.collection

@@ -1,7 +1,7 @@
-package collections_test
+package queue_test
 
 import (
-	"github.com/joaonrb/go-lib/collections"
+	"github.com/joaonrb/go-lib/queue"
 	"github.com/joaonrb/go-lib/types"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -9,9 +9,9 @@ import (
 	"time"
 )
 
-type CollectionTestData struct {
-	Name       string
-	Collection collections.Collection[any]
+type QueueTestData struct {
+	Name  string
+	Queue *queue.Queue[any]
 }
 
 var data = map[any]bool{
@@ -22,22 +22,22 @@ var data = map[any]bool{
 	"vanilla": true,
 }
 
-func TestCollectionShouldReadElementsWhenElementsArePutOnTheCollection(t *testing.T) {
-	tests := []CollectionTestData{
-		{"Queue Collection size 4", collections.Queue[any](4)},
-		{"Queue Collection size 10", collections.Queue[any](10)},
+func TestQueueShouldReadElementsWhenElementsArePutOnTheQueue(t *testing.T) {
+	tests := []QueueTestData{
+		{"New Collection size 5", queue.New[any](5)},
+		{"New Collection size 10", queue.New[any](10)},
 	}
 
 	for _, test := range tests {
 		t.Run(test.Name, func(t *testing.T) {
-			collection := test.Collection
+			queue := test.Queue
 			for value := range data {
-				collection.Push(value)
+				queue.Push(value)
 			}
-			assert.False(t, collection.IsEmpty(), "IsEmpty is expected to be false")
-			assert.Equalf(t, len(data), collection.Length(), "Length is expected to be %d", len(data))
-			for !collection.IsEmpty() {
-				result := testPop(t, collection)
+			assert.False(t, queue.IsEmpty(), "IsEmpty is expected to be false")
+			assert.Equalf(t, len(data), queue.Length(), "Length is expected to be %d", len(data))
+			for !queue.IsEmpty() {
+				result := testPop[any](t, queue)
 				requireOK[any](t, result)
 				result.WhenOK(func(value any) {
 					assert.Contains(t, data, value, "Pop value %v is expected to be in data", value)
@@ -48,13 +48,13 @@ func TestCollectionShouldReadElementsWhenElementsArePutOnTheCollection(t *testin
 }
 
 func TestCollectionMustPutShouldReturnFalseWhenCollectionIsFull(t *testing.T) {
-	tests := []CollectionTestData{
-		{"Queue Collection size 3", collections.Queue[any](3)},
+	tests := []QueueTestData{
+		{"New Collection size 3", queue.New[any](3)},
 	}
 
 	for _, test := range tests {
 		t.Run(test.Name, func(t *testing.T) {
-			collection := test.Collection
+			collection := test.Queue
 			collection.Push(1)
 			collection.Push(2)
 			collection.Push(3)
@@ -67,7 +67,7 @@ func TestCollectionMustPutShouldReturnFalseWhenCollectionIsFull(t *testing.T) {
 	}
 }
 
-func testPop[T any](t *testing.T, queue collections.Collection[T]) types.Result[T] {
+func testPop[T any](t *testing.T, queue *queue.Queue[T]) types.Result[T] {
 	var result types.Result[T]
 	c := make(chan types.Result[T])
 	go func() {

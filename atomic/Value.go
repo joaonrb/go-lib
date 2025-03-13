@@ -33,10 +33,10 @@ func (value Value[T]) Set(v T) {
 	value.in <- v
 }
 
-func (value Value[T]) Swap(n T) (old T) {
+func (value Value[T]) Swap(v T) (old T) {
 	value.ensureIsInitialized()
 	old = <-value.out
-	value.in <- n
+	value.in <- v
 	return
 }
 

@@ -31,12 +31,12 @@ func (nothing Nothing[T]) Or(value T) Maybe[T] {
 	return Some[T]{Value: value}
 }
 
-func (nothing Nothing[T]) Is(T) bool {
+func (nothing Nothing[T]) If(Comparator[T]) bool {
 	return false
 }
 
-func (nothing Nothing[T]) IsIn(...T) bool {
-	return false
+func (nothing Nothing[T]) DoIf(Comparator[T], func(T) Maybe[T]) Maybe[T] {
+	return nothing
 }
 
 func (Nothing[T]) TryValue() T {

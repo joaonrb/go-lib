@@ -57,12 +57,12 @@ func TestMaybeNothingTryValueShouldExecuteWhenNothingMethod(t *testing.T) {
 	})
 }
 
-func TestMaybeNothingIsShouldReturnFalse(t *testing.T) {
+func TestMaybeNothingIfShouldReturnFalse(t *testing.T) {
 	var test monad.Maybe[int] = monad.Nothing[int]{}
-	assert.False(t, test.Is(10))
+	assert.False(t, test.If(monad.Equal(10)))
 }
 
 func TestMaybeNothingIsInShouldReturnFalse(t *testing.T) {
 	var test monad.Maybe[int] = monad.Nothing[int]{}
-	assert.False(t, test.IsIn(1, 2, 3, 4, 5, 10))
+	assert.False(t, test.If(monad.In(1, 2, 3, 4, 5, 10)))
 }

@@ -20,14 +20,14 @@ func TestMapWhenMaybeIsNothingThenMaybeShouldBeNothing(t *testing.T) {
 	t.Parallel()
 	var value maybe.Maybe[string] = maybe.Nothing[string]{}
 	r := maybe.Map(value, stringToInt)
-	require.IsType(t, maybe.Nothing[string]{}, r)
+	require.IsType(t, maybe.Nothing[int64]{}, r)
 }
 
 func TestMapResultIsOkAndCallReturnsErrorThenResultShouldBeError(t *testing.T) {
 	t.Parallel()
 	var value maybe.Maybe[string] = maybe.Just[string]{Value: "José"}
 	r := maybe.Map(value, stringToInt)
-	require.IsType(t, maybe.Nothing[string]{}, r)
+	require.IsType(t, maybe.Nothing[int64]{}, r)
 }
 
 func stringToInt(value string) maybe.Maybe[int64] {

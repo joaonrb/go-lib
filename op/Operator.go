@@ -2,25 +2,19 @@ package op
 
 import "cmp"
 
-type Operator[T any] func(T) bool
+type Operator[T any] struct {
+	Evaluator[T]
+}
 
 func (operator Operator[T]) And(other Operator[T]) Operator[T] {
 	return func(value T) bool {
-		return operator(value) && other(value)
+		return operator.Evaluate(value) && other.Evaluate(value)
 	}
 }
 
 func (operator Operator[T]) Or(other Operator[T]) Operator[T] {
 	return func(value T) bool {
 		return operator(value) || other(value)
-	}
-}
-
-func Equal[T any](other T) Operator[T] {
-	return func(value T) bool {
-		var v any = value
-		equatable, ok := v.(Equatable[T])
-		return (ok && equatable.Equal(other)) || v == toAny(other)
 	}
 }
 

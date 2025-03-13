@@ -2,4 +2,3 @@ linters:
   disable:
     - unused
     - typecheck
-    - goanalysis_metalinter

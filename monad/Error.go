@@ -1,6 +1,7 @@
 package monad
 
 import (
+	"errors"
 	"fmt"
 )
 
@@ -31,6 +32,14 @@ func (err Error[T]) WhenError(call func(error)) Result[T] {
 
 func (err Error[T]) Or(value T) Result[T] {
 	return OK[T]{Value: value}
+}
+
+func (err Error[T]) Is(value T) bool {
+	return false
+}
+
+func (err Error[T]) IsError(value error) bool {
+	return errors.Is(value, err.Err)
 }
 
 func (err Error[T]) TryValue() T {

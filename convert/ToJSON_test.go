@@ -1,27 +1,28 @@
-package convertto_test
+package convert_test
 
 import (
 	"testing"
 	"time"
 
-	"github.com/joaonrb/go-lib/convertto"
+	"github.com/joaonrb/go-lib/convert"
+
 	"github.com/joaonrb/go-lib/monad"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestJSONShouldReturnAJsonLikeStringWhenValueIsAString(t *testing.T) {
-	assertOK(t, `"João Nuno"`, convertto.JSON("João Nuno"))
+func TestToJSONShouldReturnAJsonLikeStringWhenValueIsAString(t *testing.T) {
+	assertOK(t, `"João Nuno"`, convert.ToJSON("João Nuno"))
 }
 
-func TestJSONShouldReturnAJsonLikeNumberWhenValueIsANumber(t *testing.T) {
-	assertOK(t, `10`, convertto.JSON(10))
+func TestToJSONShouldReturnAJsonLikeNumberWhenValueIsANumber(t *testing.T) {
+	assertOK(t, `10`, convert.ToJSON(10))
 }
 
-func TestJSONShouldReturnADatetimeWhenValueIsADatetime(t *testing.T) {
+func TestToJSONShouldReturnADatetimeWhenValueIsADatetime(t *testing.T) {
 	assertOK(
 		t,
 		`"2024-10-19T12:02:00Z"`,
-		convertto.JSON(time.Date(2024, 10, 19, 12, 2, 0, 0, time.UTC)),
+		convert.ToJSON(time.Date(2024, 10, 19, 12, 2, 0, 0, time.UTC)),
 	)
 }
 
@@ -31,7 +32,7 @@ type Person struct {
 	Birthday time.Time
 }
 
-func TestJSONShouldReturnAObjectWhenValueIsAnObject(t *testing.T) {
+func TestToJSONShouldReturnAObjectWhenValueIsAnObject(t *testing.T) {
 	person := Person{
 		Name:     "David Doe",
 		Age:      28,
@@ -40,11 +41,11 @@ func TestJSONShouldReturnAObjectWhenValueIsAnObject(t *testing.T) {
 	assertOK(
 		t,
 		`{"Name":"David Doe","Age":28,"Birthday":"1992-10-19T12:02:00Z"}`,
-		convertto.JSON(person),
+		convert.ToJSON(person),
 	)
 }
 
-func TestPrettyJSONShouldReturnAObjectWhenValueIsAnObject(t *testing.T) {
+func TestToPrettyJSONShouldReturnAObjectWhenValueIsAnObject(t *testing.T) {
 	person := Person{
 		Name:     "David Doe",
 		Age:      28,
@@ -55,7 +56,7 @@ func TestPrettyJSONShouldReturnAObjectWhenValueIsAnObject(t *testing.T) {
     "Age": 28,
     "Birthday": "1992-10-19T12:02:00Z"
 }`
-	assertOK(t, expected, convertto.PrettyJSON(person))
+	assertOK(t, expected, convert.ToPrettyJSON(person))
 }
 
 func assertOK[T any](t *testing.T, expected any, result monad.Result[T]) {

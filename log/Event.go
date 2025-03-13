@@ -3,8 +3,6 @@ package log
 import (
 	"fmt"
 	"time"
-
-	"github.com/joaonrb/go-lib/convertto"
 )
 
 type Event struct {
@@ -30,9 +28,9 @@ func newEvent(level Level, logger *Logger, message string, args ...any) *Event {
 
 func (event *Event) String() string {
 	return fmt.Sprintf(
-		"Event{Name: %s, Message: %s, Level: %s}",
-		convertto.JSON(event.Name()).TryValue(),
-		convertto.JSON(event.message).TryValue(),
+		"Event{Name: \"%s\", Message: \"%s\", Level: %s}",
+		event.Name(),
+		event.message,
 		event.level.String(),
 	)
 }
@@ -43,7 +41,8 @@ func (event *Event) Name() string {
 
 func (event *Event) Message() string {
 	if event.buildMessage == nil {
-		event.buildMessage = convertto.Pointer(fmt.Sprintf(event.message, event.args...))
+		msg := fmt.Sprintf(event.message, event.args...)
+		event.buildMessage = &msg
 	}
 	return *event.buildMessage
 }

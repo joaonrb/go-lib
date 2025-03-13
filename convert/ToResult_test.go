@@ -1,4 +1,4 @@
-package convertto_test
+package convert_test
 
 import (
 	"errors"
@@ -6,15 +6,16 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/joaonrb/go-lib/convertto"
+	"github.com/joaonrb/go-lib/convert"
+
 	"github.com/joaonrb/go-lib/monad"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-func TestResultOKShouldConvertCorrectlyWhenDoingCorrectOperation(t *testing.T) {
+func TestToResultOKShouldConvertCorrectlyWhenDoingCorrectOperation(t *testing.T) {
 	var stringResult monad.Result[string] = monad.OK[string]{Value: "10"}
-	result := convertto.Result[string, int](stringResult).Then(intConverter)
+	result := convert.ToResult[string, int](stringResult).Then(intConverter)
 	require.IsTypef(
 		t,
 		monad.OK[int]{},
@@ -26,9 +27,9 @@ func TestResultOKShouldConvertCorrectlyWhenDoingCorrectOperation(t *testing.T) {
 	assert.Equal(t, 10, value, "result value is expected to be 10, got %d instead", value)
 }
 
-func TestResultOKShouldNotConvertWhenDoingIncorrectOperation(t *testing.T) {
+func TestToResultOKShouldNotConvertWhenDoingIncorrectOperation(t *testing.T) {
 	var stringResult monad.Result[string] = monad.OK[string]{Value: "1gg0"}
-	result := convertto.Result[string, int](stringResult).Then(intConverter)
+	result := convert.ToResult[string, int](stringResult).Then(intConverter)
 	require.IsTypef(
 		t,
 		monad.Error[int]{},
@@ -44,9 +45,9 @@ func TestResultOKShouldNotConvertWhenDoingIncorrectOperation(t *testing.T) {
 	)
 }
 
-func TestResultErrorShouldNotConvertWhenDoingIncorrectOperation(t *testing.T) {
+func TestToResultErrorShouldNotConvertWhenDoingIncorrectOperation(t *testing.T) {
 	var stringResult monad.Result[string] = monad.Error[string]{Err: errors.New("some error")}
-	result := convertto.Result[string, int](stringResult).Then(intConverter)
+	result := convert.ToResult[string, int](stringResult).Then(intConverter)
 	require.IsTypef(
 		t,
 		monad.Error[int]{},
@@ -58,24 +59,24 @@ func TestResultErrorShouldNotConvertWhenDoingIncorrectOperation(t *testing.T) {
 	assert.Equal(t, "some error", err.Error())
 }
 
-func TestResultOKStringRepresentationShouldHaveTheType(t *testing.T) {
+func TestToResultOKStringRepresentationShouldHaveTheType(t *testing.T) {
 	var intResult monad.Result[int] = monad.OK[int]{Value: 10}
 	assert.Equal(
 		t,
 		"OK[int, string]{Some: 10}",
-		fmt.Sprint(convertto.Result[int, string](intResult)),
+		fmt.Sprint(convert.ToResult[int, string](intResult)),
 	)
 	var stringResult monad.Result[string] = monad.OK[string]{Value: "10"}
 	assert.Equal(
 		t,
 		"OK[string, int]{Some: \"10\"}",
-		fmt.Sprint(convertto.Result[string, int](stringResult)),
+		fmt.Sprint(convert.ToResult[string, int](stringResult)),
 	)
 	var errorResult monad.Result[int] = monad.Error[int]{Err: errors.New("some error")}
 	assert.Equal(
 		t,
 		"Error[int, string]{Err: \"some error\"}",
-		fmt.Sprint(convertto.Result[int, string](errorResult)),
+		fmt.Sprint(convert.ToResult[int, string](errorResult)),
 	)
 }
 

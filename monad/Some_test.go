@@ -57,3 +57,13 @@ func TestMaybeValueTryValueShouldReturnTheCorrectValue(t *testing.T) {
 		assert.Equal(t, 10, test.TryValue(), "Some.TryValue should return 10")
 	})
 }
+
+func TestMaybeValueIsShouldReturnTrueWhenUseTheSameValue(t *testing.T) {
+	var test monad.Maybe[int] = monad.Some[int]{Value: 10}
+	assert.True(t, test.Is(10))
+}
+
+func TestMaybeValueIsShouldReturnFalseWhenUseTheDifferentValue(t *testing.T) {
+	var test monad.Maybe[int] = monad.Some[int]{Value: 10}
+	assert.False(t, test.Is(11))
+}

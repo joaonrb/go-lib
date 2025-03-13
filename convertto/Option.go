@@ -6,20 +6,20 @@ import (
 	"github.com/joaonrb/go-lib/types"
 )
 
-func OptionType[T1 any, T2 any](option types.Option[T1]) OptionTypeConverter[T1, T2] {
-	return optionType[T1, T2]{Option: option}
+func Option[T1 any, T2 any](option types.Option[T1]) OptionConverter[T1, T2] {
+	return optionConverter[T1, T2]{Option: option}
 }
 
-type OptionTypeConverter[T1 any, T2 any] interface {
+type OptionConverter[T1 any, T2 any] interface {
 	Then(call func(T1) types.Option[T2]) types.Option[T2]
 }
 
-type optionType[T1 any, T2 any] struct {
+type optionConverter[T1 any, T2 any] struct {
 	Option types.Option[T1]
 }
 
-func (ot optionType[T1, T2]) Then(call func(T1) types.Option[T2]) (option types.Option[T2]) {
-	ot.Option.
+func (oc optionConverter[T1, T2]) Then(call func(T1) types.Option[T2]) (option types.Option[T2]) {
+	oc.Option.
 		WhenValue(func(t T1) {
 			option = call(t)
 		}).
@@ -28,12 +28,12 @@ func (ot optionType[T1, T2]) Then(call func(T1) types.Option[T2]) (option types.
 		})
 	return
 }
-func (ot optionType[T1, T2]) String() (str string) {
+func (oc optionConverter[T1, T2]) String() (str string) {
 	var (
 		value1 T1
 		value2 T2
 	)
-	ot.Option.
+	oc.Option.
 		WhenValue(func(t T1) {
 			switch value := any(t).(type) {
 			case string, fmt.Stringer:

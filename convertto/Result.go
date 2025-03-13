@@ -6,20 +6,20 @@ import (
 	"github.com/joaonrb/go-lib/types"
 )
 
-func ResultType[T1 any, T2 any](result types.Result[T1]) ResultTypeConverter[T1, T2] {
-	return resultType[T1, T2]{Result: result}
+func Result[T1 any, T2 any](result types.Result[T1]) ResultConverter[T1, T2] {
+	return resultConverter[T1, T2]{Result: result}
 }
 
-type ResultTypeConverter[T1 any, T2 any] interface {
+type ResultConverter[T1 any, T2 any] interface {
 	Then(call func(T1) types.Result[T2]) types.Result[T2]
 }
 
-type resultType[T1 any, T2 any] struct {
+type resultConverter[T1 any, T2 any] struct {
 	Result types.Result[T1]
 }
 
-func (rt resultType[T1, T2]) Then(call func(T1) types.Result[T2]) (result types.Result[T2]) {
-	rt.Result.
+func (rc resultConverter[T1, T2]) Then(call func(T1) types.Result[T2]) (result types.Result[T2]) {
+	rc.Result.
 		WhenOK(func(t T1) {
 			result = call(t)
 		}).
@@ -28,12 +28,12 @@ func (rt resultType[T1, T2]) Then(call func(T1) types.Result[T2]) (result types.
 		})
 	return
 }
-func (rt resultType[T1, T2]) String() (str string) {
+func (rc resultConverter[T1, T2]) String() (str string) {
 	var (
 		value1 T1
 		value2 T2
 	)
-	rt.Result.
+	rc.Result.
 		WhenOK(func(t T1) {
 
 			switch value := any(t).(type) {

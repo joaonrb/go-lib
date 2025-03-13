@@ -1,4 +1,4 @@
-package convertto
+package convert
 
 import "github.com/joaonrb/go-lib/types"
 

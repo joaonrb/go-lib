@@ -1,6 +1,6 @@
 module github.com/joaonrb/go-lib
 
-go 1.23.0
+go 1.23.2
 
 require (
 	github.com/go-errors/errors v1.5.1

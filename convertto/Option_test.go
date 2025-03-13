@@ -11,9 +11,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestOptionTypeValueShouldConvertCorrectlyWhenDoingCorrectOperation(t *testing.T) {
+func TestOptionValueShouldConvertCorrectlyWhenDoingCorrectOperation(t *testing.T) {
 	var stringOption types.Option[string] = types.Value[string]{This: "10"}
-	option := convertto.OptionType[string, int](stringOption).Then(mustIntConverter)
+	option := convertto.Option[string, int](stringOption).Then(mustIntConverter)
 	require.IsTypef(
 		t,
 		types.Value[int]{},
@@ -25,9 +25,9 @@ func TestOptionTypeValueShouldConvertCorrectlyWhenDoingCorrectOperation(t *testi
 	assert.Equal(t, 10, value, "option is expected to be 10, got %d instead", value)
 }
 
-func TestOptionTypeValueShouldNotConvertWhenDoingIncorrectOperation(t *testing.T) {
+func TestOptionValueShouldNotConvertWhenDoingIncorrectOperation(t *testing.T) {
 	var stringOption types.Option[string] = types.Value[string]{This: "1gg0"}
-	option := convertto.OptionType[string, int](stringOption).Then(mustIntConverter)
+	option := convertto.Option[string, int](stringOption).Then(mustIntConverter)
 	require.IsTypef(
 		t,
 		types.Nothing[int]{},
@@ -37,9 +37,9 @@ func TestOptionTypeValueShouldNotConvertWhenDoingIncorrectOperation(t *testing.T
 	)
 }
 
-func TestOptionTypeNothingShouldNotConvertWhenDoingIncorrectOperation(t *testing.T) {
+func TestOptionNothingShouldNotConvertWhenDoingIncorrectOperation(t *testing.T) {
 	var stringOption types.Option[string] = types.Nothing[string]{}
-	option := convertto.OptionType[string, int](stringOption).Then(mustIntConverter)
+	option := convertto.Option[string, int](stringOption).Then(mustIntConverter)
 	require.IsTypef(
 		t,
 		types.Nothing[int]{},
@@ -49,24 +49,24 @@ func TestOptionTypeNothingShouldNotConvertWhenDoingIncorrectOperation(t *testing
 	)
 }
 
-func TestOptionTypeOKStringRepresentationShouldHaveTheType(t *testing.T) {
+func TestOptionOKStringRepresentationShouldHaveTheType(t *testing.T) {
 	var intOption types.Option[int] = types.Value[int]{This: 10}
 	assert.Equal(
 		t,
 		"Value[int, string]{This: 10}",
-		fmt.Sprint(convertto.OptionType[int, string](intOption)),
+		fmt.Sprint(convertto.Option[int, string](intOption)),
 	)
 	var stringOption types.Option[string] = types.Value[string]{This: "10"}
 	assert.Equal(
 		t,
 		"Value[string, int]{This: \"10\"}",
-		fmt.Sprint(convertto.OptionType[string, int](stringOption)),
+		fmt.Sprint(convertto.Option[string, int](stringOption)),
 	)
 	var errorResult types.Option[int] = types.Nothing[int]{}
 	assert.Equal(
 		t,
 		"Nothing[int, string]{}",
-		fmt.Sprint(convertto.OptionType[int, string](errorResult)),
+		fmt.Sprint(convertto.Option[int, string](errorResult)),
 	)
 }
 

@@ -2,6 +2,7 @@ package async
 
 import (
 	"fmt"
+
 	"github.com/joaonrb/go-lib/atomic"
 	"github.com/joaonrb/go-lib/monad"
 )

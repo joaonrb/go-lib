@@ -1,9 +1,10 @@
 package async_test
 
 import (
+	"testing"
+
 	"github.com/joaonrb/go-lib/async"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestGatherShouldReturnOnlyWhenAllFuturesAreFinished(t *testing.T) {

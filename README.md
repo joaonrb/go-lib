@@ -1,3 +1,4 @@
+[![Quality](https://github.com/joaonrb/go-lib/actions/workflows/quality.yml/badge.svg)](https://github.com/joaonrb/go-lib/actions/workflows/quality.yml)
 # go-lib
 Helpful go library. It contains the most common methods used by me in most of 
 my projects. I included this in this library, so I don't have to re-write them

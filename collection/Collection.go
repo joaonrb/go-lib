@@ -28,13 +28,13 @@ type Collection[T any] interface {
 	ForEach(ctx context.Context, loop func(index int, value T))
 
 	// ForN loops over the next N unread elements in the abstract.
-	ForN(n uint16, loop func(index int, value T))
+	ForN(n uint64, loop func(index int, value T))
 
 	// Flush removes and returns OK with all elements from the abstract. Returns an Error if the abstract is closed.
 	Flush() types.Result[[]T]
 
 	// Length returns the number of elements in the abstract.
-	Length() int
+	Length() uint64
 
 	// IsEmpty returns true if the abstract has no elements.
 	IsEmpty() bool
@@ -53,12 +53,12 @@ type collection[T any] interface {
 	Flush() []T
 }
 
-func constructor[T any](collection collection[T], capacity uint16) (*abstract[T], *controller[T]) {
+func constructor[T any](collection collection[T], capacity uint64) (*abstract[T], *controller[T]) {
 	ctx, cancel := context.WithCancel(context.Background())
 	input := make(chan chan T)
 	output := make(chan chan T)
 	peek := make(chan chan T)
-	length := make(chan uint16)
+	length := make(chan uint64)
 	flush := make(chan chan []T)
 	abs := &abstract[T]{
 		context: ctx,

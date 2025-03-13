@@ -2,8 +2,8 @@ name: Quality
 run-name: ${{ github.actor }} is checking code quality
 on: [push]
 jobs:
-  quality:
-    name: quality
+  test:
+    name: test
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -19,7 +19,7 @@ jobs:
         with:
           go-version: ${{ matrix.go-version }}
       - name: Install dependencies
-        run: go get .
+        run: go mod install
       - name: Test with Go
         run: go test -json > TestResults-${{ matrix.go-version }}.json
       - name: Upload Go test results
@@ -28,7 +28,7 @@ jobs:
           name: Go-results-${{ matrix.go-version }}
           path: TestResults-${{ matrix.go-version }}.json
 
-  golangci:
+  lint:
     name: lint
     runs-on: ubuntu-latest
     strategy:

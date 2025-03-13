@@ -30,5 +30,12 @@ func (value Value[T]) WhenNothing(func()) Option[T] {
 }
 
 func (value Value[T]) String() string {
-	return fmt.Sprintf("Value[%T]{This: %v}", value.This, value.This)
+	var this any = value.This
+	switch this := this.(type) {
+	case string, fmt.Stringer:
+		return fmt.Sprintf("Value[%T]{This: \"%s\"}", this, this)
+	default:
+		return fmt.Sprintf("Value[%T]{This: %v}", this, this)
+	}
+
 }

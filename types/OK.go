@@ -30,11 +30,11 @@ func (ok OK[T]) WhenError(func(error)) Result[T] {
 }
 
 func (ok OK[T]) String() string {
-	var t any = ok.Value
-	switch t.(type) {
-	case string:
-		return fmt.Sprintf("OK[%T]{Value: \"%v\"}", ok.Value, ok.Value)
+	var value any = ok.Value
+	switch value := value.(type) {
+	case string, fmt.Stringer:
+		return fmt.Sprintf("OK[%T]{Value: \"%s\"}", value, value)
 	default:
-		return fmt.Sprintf("OK[%T]{Value: %v}", ok.Value, ok.Value)
+		return fmt.Sprintf("OK[%T]{Value: %v}", value, value)
 	}
 }

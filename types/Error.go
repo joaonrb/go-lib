@@ -17,8 +17,7 @@ func (err Error[T]) Then(func(T) Result[T]) Result[T] {
 }
 
 func (err Error[T]) Error(call func(error) Result[T]) Result[T] {
-	call(err.Err)
-	return err
+	return call(err.Err)
 }
 
 func (err Error[T]) WhenOK(call func(T)) Result[T] {

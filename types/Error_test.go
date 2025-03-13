@@ -50,9 +50,15 @@ func TestResultErrorShouldExecuteWhenErrorMethod(t *testing.T) {
 	assert.Equal(t, "new foo", result.(types.Error[int]).Err.Error())
 }
 
-func TestResultErrorMustValueShouldPanicTheError(t *testing.T) {
+func TestResultErrorTryValueShouldPanicTheError(t *testing.T) {
 	var test types.Result[int] = types.Error[int]{Err: errors.New("foo")}
 	assert.Panics(t, func() {
-		_ = test.MustValue()
+		_ = test.TryValue()
 	})
+}
+
+func TestResultErrorTryErrorShouldReturnTheError(t *testing.T) {
+	err := errors.New("foo")
+	var test types.Result[int] = types.Error[int]{Err: err}
+	assert.ErrorAs(t, test.TryError(), &err)
 }

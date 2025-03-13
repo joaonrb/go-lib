@@ -29,8 +29,16 @@ func (err Error[T]) WhenError(call func(error)) Result[T] {
 	return err
 }
 
-func (err Error[T]) MustValue() T {
-	panic(err.Err)
+func (err Error[T]) Or(value T) Result[T] {
+	return OK[T]{Value: value}
+}
+
+func (err Error[T]) TryValue() T {
+	panic(NewResultIsErrorError(err.Err))
+}
+
+func (err Error[T]) TryError() error {
+	return err.Err
 }
 
 func (err Error[T]) String() string {

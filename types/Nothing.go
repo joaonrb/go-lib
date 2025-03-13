@@ -27,8 +27,12 @@ func (nothing Nothing[T]) WhenNothing(call func()) Option[T] {
 	return nothing
 }
 
-func (Nothing[T]) MustValue() T {
-	panic(NewNothingError())
+func (nothing Nothing[T]) Or(value T) Option[T] {
+	return Value[T]{This: value}
+}
+
+func (Nothing[T]) TryValue() T {
+	panic(NewOptionsIsNothingError())
 }
 
 func (Nothing[T]) String() string {

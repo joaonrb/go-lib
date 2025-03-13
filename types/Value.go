@@ -29,7 +29,11 @@ func (value Value[T]) WhenNothing(func()) Option[T] {
 	return value
 }
 
-func (value Value[T]) MustValue() T {
+func (value Value[T]) Or(T) Option[T] {
+	return value
+}
+
+func (value Value[T]) TryValue() T {
 	return value.This
 }
 

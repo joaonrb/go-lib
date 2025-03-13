@@ -53,6 +53,6 @@ func TestOptionNothingShouldExecuteWhenNothingMethod(t *testing.T) {
 func TestOptionNothingMustValueShouldExecuteWhenNothingMethod(t *testing.T) {
 	var test types.Option[int] = types.Nothing[int]{}
 	assert.Panics(t, func() {
-		_ = test.MustValue()
+		_ = test.TryValue()
 	})
 }

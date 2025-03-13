@@ -52,9 +52,16 @@ func TestResultOKShouldNotExecuteWhenErrorMethod(t *testing.T) {
 	})
 }
 
-func TestResultOKMustValueShouldReturnTheRightValue(t *testing.T) {
+func TestResultOKTryValueShouldReturnTheRightValue(t *testing.T) {
 	var test types.Result[int] = types.OK[int]{Value: 10}
 	assert.NotPanics(t, func() {
-		assert.Equal(t, 10, test.MustValue(), "OK.MustValue should return the correct value")
+		assert.Equal(t, 10, test.TryValue(), "OK.TryValue should return the correct value")
+	})
+}
+
+func TestResultOKTryErrorShouldRaiseAnError(t *testing.T) {
+	var test types.Result[int] = types.OK[int]{Value: 10}
+	assert.PanicsWithError(t, "result is ok", func() {
+		assert.Equal(t, 10, test.TryError(), "OK.TryError should panic")
 	})
 }

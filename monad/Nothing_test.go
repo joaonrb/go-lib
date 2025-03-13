@@ -61,3 +61,18 @@ func TestMaybeNothingIsShouldReturnFalse(t *testing.T) {
 	var test monad.Maybe[int] = monad.Nothing[int]{}
 	assert.False(t, test.Is(10))
 }
+
+func TestMaybeNothingIsNotShouldReturnTrue(t *testing.T) {
+	var test monad.Maybe[int] = monad.Nothing[int]{}
+	assert.True(t, test.IsNot(10))
+}
+
+func TestMaybeNothingIsInShouldReturnFalse(t *testing.T) {
+	var test monad.Maybe[int] = monad.Nothing[int]{}
+	assert.False(t, test.IsIn(1, 2, 3, 4, 5, 10))
+}
+
+func TestMaybeValueIsInShouldReturnTrue(t *testing.T) {
+	var test monad.Maybe[int] = monad.Nothing[int]{}
+	assert.True(t, test.IsNotIn(1, 2, 3, 4, 5))
+}

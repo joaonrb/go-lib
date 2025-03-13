@@ -1,4 +1,4 @@
-package convert_test
+package convertto_test
 
 import (
 	"errors"
@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/joaonrb/go-lib/convert"
+	"github.com/joaonrb/go-lib/convertto"
 	"github.com/joaonrb/go-lib/types"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -14,7 +14,7 @@ import (
 
 func TestResultTypeOKShouldConvertCorrectlyWhenDoingCorrectOperation(t *testing.T) {
 	var stringResult types.Result[string] = types.OK[string]{Value: "10"}
-	result := convert.ResultType[string, int](stringResult).Then(intConverter)
+	result := convertto.ResultType[string, int](stringResult).Then(intConverter)
 	require.IsTypef(
 		t,
 		types.OK[int]{},
@@ -28,7 +28,7 @@ func TestResultTypeOKShouldConvertCorrectlyWhenDoingCorrectOperation(t *testing.
 
 func TestResultTypeOKShouldNotConvertWhenDoingIncorrectOperation(t *testing.T) {
 	var stringResult types.Result[string] = types.OK[string]{Value: "1gg0"}
-	result := convert.ResultType[string, int](stringResult).Then(intConverter)
+	result := convertto.ResultType[string, int](stringResult).Then(intConverter)
 	require.IsTypef(
 		t,
 		types.Error[int]{},
@@ -46,7 +46,7 @@ func TestResultTypeOKShouldNotConvertWhenDoingIncorrectOperation(t *testing.T) {
 
 func TestResultTypeErrorShouldNotConvertWhenDoingIncorrectOperation(t *testing.T) {
 	var stringResult types.Result[string] = types.Error[string]{Err: errors.New("some error")}
-	result := convert.ResultType[string, int](stringResult).Then(intConverter)
+	result := convertto.ResultType[string, int](stringResult).Then(intConverter)
 	require.IsTypef(
 		t,
 		types.Error[int]{},
@@ -63,19 +63,19 @@ func TestResultTypeOKStringRepresentationShouldHaveTheType(t *testing.T) {
 	assert.Equal(
 		t,
 		"OK[int, string]{Value: 10}",
-		fmt.Sprint(convert.ResultType[int, string](intResult)),
+		fmt.Sprint(convertto.ResultType[int, string](intResult)),
 	)
 	var stringResult types.Result[string] = types.OK[string]{Value: "10"}
 	assert.Equal(
 		t,
 		"OK[string, int]{Value: \"10\"}",
-		fmt.Sprint(convert.ResultType[string, int](stringResult)),
+		fmt.Sprint(convertto.ResultType[string, int](stringResult)),
 	)
 	var errorResult types.Result[int] = types.Error[int]{Err: errors.New("some error")}
 	assert.Equal(
 		t,
 		"Error[int, string]{Err: \"some error\"}",
-		fmt.Sprint(convert.ResultType[int, string](errorResult)),
+		fmt.Sprint(convertto.ResultType[int, string](errorResult)),
 	)
 }
 

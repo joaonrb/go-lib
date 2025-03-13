@@ -29,6 +29,10 @@ func (value Value[T]) WhenNothing(func()) Option[T] {
 	return value
 }
 
+func (value Value[T]) MustValue() T {
+	return value.This
+}
+
 func (value Value[T]) String() string {
 	var this any = value.This
 	switch this := this.(type) {

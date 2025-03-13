@@ -6,4 +6,5 @@ type Option[T any] interface {
 	Else(call func() Option[T]) Option[T]
 	WhenValue(call func(T)) Option[T]
 	WhenNothing(call func()) Option[T]
+	MustValue() T
 }

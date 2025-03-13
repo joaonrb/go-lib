@@ -27,6 +27,10 @@ func (nothing Nothing[T]) WhenNothing(call func()) Option[T] {
 	return nothing
 }
 
+func (Nothing[T]) MustValue() T {
+	panic(NewNothingError())
+}
+
 func (Nothing[T]) String() string {
 	var value T
 	return fmt.Sprintf("Nothing[%T]{}", value)

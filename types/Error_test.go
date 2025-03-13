@@ -49,3 +49,10 @@ func TestResultErrorShouldExecuteWhenErrorMethod(t *testing.T) {
 	require.IsType(t, types.Error[int]{}, result)
 	assert.Equal(t, "new foo", result.(types.Error[int]).Err.Error())
 }
+
+func TestResultErrorMustValueShouldPanicTheError(t *testing.T) {
+	var test types.Result[int] = types.Error[int]{Err: errors.New("foo")}
+	assert.Panics(t, func() {
+		_ = test.MustValue()
+	})
+}

@@ -2,8 +2,9 @@ package log
 
 import (
 	"fmt"
-	"github.com/joaonrb/go-lib/convertto"
 	"time"
+
+	"github.com/joaonrb/go-lib/convertto"
 )
 
 type Event struct {

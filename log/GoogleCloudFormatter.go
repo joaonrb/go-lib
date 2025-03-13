@@ -3,6 +3,7 @@ package log
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/joaonrb/go-lib/convertto"
 )
 
@@ -35,5 +36,8 @@ type Entry struct {
 }
 
 func (entry *Entry) String() string {
-	return fmt.Sprintf("GoogleCloudLogEntry{Message: %s}", convertto.JSON(entry.Message).MustValue())
+	return fmt.Sprintf(
+		"GoogleCloudLogEntry{Message: %s}",
+		convertto.JSON(entry.Message).MustValue(),
+	)
 }

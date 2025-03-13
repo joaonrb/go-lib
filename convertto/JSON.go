@@ -2,6 +2,7 @@ package convertto
 
 import (
 	"encoding/json"
+
 	"github.com/joaonrb/go-lib/types"
 )
 

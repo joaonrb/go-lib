@@ -2,8 +2,9 @@ package convert_test
 
 import (
 	"errors"
-	"github.com/joaonrb/go-lib/convert"
 	"testing"
+
+	"github.com/joaonrb/go-lib/convert"
 
 	"github.com/joaonrb/go-lib/types"
 	"github.com/stretchr/testify/assert"

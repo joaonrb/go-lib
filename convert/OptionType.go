@@ -2,6 +2,7 @@ package convert
 
 import (
 	"fmt"
+
 	"github.com/joaonrb/go-lib/types"
 )
 

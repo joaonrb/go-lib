@@ -3,10 +3,11 @@ package types_test
 import (
 	"errors"
 	"fmt"
+	"testing"
+
 	"github.com/joaonrb/go-lib/types"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func TestResultOKStringRepresentationShouldHaveTheType(t *testing.T) {

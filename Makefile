@@ -32,7 +32,9 @@ lint:  ## Lint the code
 	@golangci-lint run
 
 install-tools: ## Install all the dependencies for the development
-	@go install github.com/golangci/golangci-lint/cmd/golangci-lint
+	@go install golang.org/x/tools/cmd/goimports@latest
+	@go install github.com/segmentio/golines@latest
+	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 
 help: ## Display this help screen
 	@grep -h -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'

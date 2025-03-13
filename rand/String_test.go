@@ -10,7 +10,7 @@ import (
 
 func defaultRandString(n int) string {
 	buff := make([]byte, int(math.Ceil(float64(n)/float64(1.33333333333))))
-	go_rand.Read(buff)
+	_, _ = go_rand.Read(buff)
 	str := base64.RawURLEncoding.EncodeToString(buff)
 	return str[:n] // strip 1 extra character we get from odd length results
 }

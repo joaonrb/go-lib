@@ -1,6 +1,9 @@
 package errors
 
-import "github.com/go-errors/errors"
+import (
+	"fmt"
+	"github.com/go-errors/errors"
+)
 
 type Error interface {
 	Error() string
@@ -10,4 +13,8 @@ type Error interface {
 
 func New(text string) Error {
 	return errors.Wrap(text, 1)
+}
+
+func Newf(tpl string, args ...any) Error {
+	return errors.Wrap(fmt.Sprintf(tpl, args...), 1)
 }

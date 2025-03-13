@@ -22,3 +22,6 @@ Simple log framework that allows to customise format and input.
 
 ### rand
 Fast string generator.
+
+### Queue
+A first in first out thread safe queue

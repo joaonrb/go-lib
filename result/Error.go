@@ -20,5 +20,5 @@ func (err Error[T, E]) Error(call func(E)) {
 }
 
 func (err Error[T, E]) String() string {
-	return fmt.Sprintf("Error[%s]{Err: %x}", reflect.TypeOf(err.Error).Name(), err.Err)
+	return fmt.Sprintf("Error[%s]{Err: %v}", reflect.TypeOf(err.Error).Name(), err.Err)
 }

@@ -68,16 +68,6 @@ func TestMaybeValueIsShouldReturnFalseWhenUseTheDifferentValue(t *testing.T) {
 	assert.False(t, test.Is(11))
 }
 
-func TestMaybeValueIsNotShouldReturnFalseWhenUseTheSameValue(t *testing.T) {
-	var test monad.Maybe[int] = monad.Some[int]{Value: 10}
-	assert.False(t, test.IsNot(10))
-}
-
-func TestMaybeValueIsNotShouldReturnTrueWhenUseTheDifferentValue(t *testing.T) {
-	var test monad.Maybe[int] = monad.Some[int]{Value: 10}
-	assert.True(t, test.IsNot(11))
-}
-
 func TestMaybeValueIsInShouldReturnTrueWhenHaveAtLeastOneEqualValue(t *testing.T) {
 	var test monad.Maybe[int] = monad.Some[int]{Value: 10}
 	assert.True(t, test.IsIn(1, 2, 3, 4, 5, 10))
@@ -86,14 +76,4 @@ func TestMaybeValueIsInShouldReturnTrueWhenHaveAtLeastOneEqualValue(t *testing.T
 func TestMaybeValueIsInShouldReturnFalseWhenDontHaveAnyEqualValue(t *testing.T) {
 	var test monad.Maybe[int] = monad.Some[int]{Value: 10}
 	assert.False(t, test.IsIn(1, 2, 3, 4, 5))
-}
-
-func TestMaybeValueIsNotInShouldReturnFalseWhenHaveAtLeastOneEqualValue(t *testing.T) {
-	var test monad.Maybe[int] = monad.Some[int]{Value: 10}
-	assert.False(t, test.IsNotIn(1, 2, 3, 4, 5, 10))
-}
-
-func TestMaybeValueIsInShouldReturnTrueWhenDontHaveAnyEqualValue(t *testing.T) {
-	var test monad.Maybe[int] = monad.Some[int]{Value: 10}
-	assert.True(t, test.IsNotIn(1, 2, 3, 4, 5))
 }

@@ -38,7 +38,32 @@ func (ok OK[T]) Is(value T) bool {
 	return s == t
 }
 
+func (ok OK[T]) IsIn(values ...T) bool {
+	var (
+		s any = ok.Value
+		t any
+	)
+	result := false
+	for i := 0; !result && i < len(values); i++ {
+		t = values[i]
+		result = result || s == t
+	}
+	return result
+}
+
 func (ok OK[T]) IsError(error) bool {
+	return false
+}
+
+func (ok OK[T]) IsErrorIn(...error) bool {
+	return false
+}
+
+func (ok OK[T]) AsError(any) bool {
+	return false
+}
+
+func (ok OK[T]) AsErrorIn(...any) bool {
 	return false
 }
 

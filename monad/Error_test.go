@@ -3,6 +3,7 @@ package monad_test
 import (
 	"errors"
 	"fmt"
+	"github.com/joaonrb/go-lib/op"
 	"testing"
 
 	"github.com/joaonrb/go-lib/monad"
@@ -63,61 +64,35 @@ func TestResultErrorTryErrorShouldReturnTheError(t *testing.T) {
 	assert.ErrorAs(t, test.TryError(), &err)
 }
 
-func TestResultErrorIsShouldReturnFalse(t *testing.T) {
+func TestResultErrorIfEqualShouldReturnFalse(t *testing.T) {
 	var test monad.Result[int] = monad.Error[int]{Err: errors.New("foo")}
-	assert.False(t, test.Is(10))
+	assert.False(t, test.If(op.Equal(10)))
 }
 
-func TestResultErrorIsInShouldReturnFalse(t *testing.T) {
+func TestResultErrorIfInShouldReturnFalse(t *testing.T) {
 	var test monad.Result[int] = monad.Error[int]{Err: errors.New("foo")}
-	assert.False(t, test.IsIn(1, 2, 3, 4, 5, 10))
+	assert.False(t, test.If(op.In(1, 2, 3, 4, 5, 10)))
 }
 
-func TestResultErrorIsErrorShouldReturnTrueWhenUseTheSameError(t *testing.T) {
+func TestResultErrorIfErrorEqualShouldReturnTrueWhenUseTheSameError(t *testing.T) {
 	err := errors.New("foo")
 	var test monad.Result[int] = monad.Error[int]{Err: err}
-	assert.True(t, test.IsError(err))
+	assert.True(t, test.IfError(op.Equal(err)))
 }
 
-func TestResultErrorIsErrorShouldReturnFalseWhenUseDifferentError(t *testing.T) {
+func TestResultErrorIfErrorEqualShouldReturnFalseWhenUseDifferentError(t *testing.T) {
 	var test monad.Result[int] = monad.Error[int]{Err: errors.New("foo")}
-	assert.False(t, test.IsError(errors.New("bar")))
+	assert.False(t, test.IfError(op.Equal(errors.New("bar"))))
 }
 
-func TestResultErrorIsErrorInShouldReturnTrueWhenHaveAnyEqualError(t *testing.T) {
+func TestResultErrorIfErrorInInShouldReturnTrueWhenHaveAnyEqualError(t *testing.T) {
 	err := errors.New("foo")
 	var test monad.Result[int] = monad.Error[int]{Err: err}
-	assert.True(t, test.IsErrorIn(errors.New("bar"), err))
+	assert.True(t, test.IfError(op.In(errors.New("bar"), err)))
 }
 
-func TestResultErrorIsErrorInShouldReturnFalseWhenDoesNotHaveAnyEqualError(t *testing.T) {
+func TestResultErrorIfErrorInShouldReturnFalseWhenDoesNotHaveAnyEqualError(t *testing.T) {
 	err := errors.New("foo")
 	var test monad.Result[int] = monad.Error[int]{Err: err}
-	assert.False(t, test.IsErrorIn(errors.New("bar"), errors.New("frank")))
+	assert.False(t, test.IfError(op.In(errors.New("bar"), errors.New("frank"))))
 }
-
-func TestResultErrorAsErrorShouldReturnTrueWhenUseWrappedError(t *testing.T) {
-	err := errors.Join(errors.New("foo"), errors.New("bar"))
-	var test monad.Result[int] = monad.Error[int]{Err: err}
-	assert.True(t, test.AsError(errors.New("foo")))
-}
-
-// Temporary hold this test
-//func TestResultErrorAsErrorShouldReturnFalseWhenDoesNotUseWrappedError(t *testing.T) {
-//	err := errors.Join(errors.New("foo"), errors.New("bar"))
-//	var test monad.Result[int] = monad.Error[int]{Err: err}
-//	assert.False(t, test.AsError(errors.New("frank")))
-//}
-
-func TestResultErrorAsErrorInShouldReturnTrueWhenHaveAnyWrappedError(t *testing.T) {
-	err := errors.Join(errors.New("foo"), errors.New("bar"))
-	var test monad.Result[int] = monad.Error[int]{Err: err}
-	assert.True(t, test.AsErrorIn(errors.New("frank"), errors.New("bar")))
-}
-
-// Temporary hold this test
-//func TestResultErrorAsErrorInShouldReturnFalseWhenDoesNotHaveAnyWrappedError(t *testing.T) {
-//	err := errors.Join(errors.New("foo"), errors.New("bar"))
-//	var test monad.Result[int] = monad.Error[int]{Err: err}
-//	assert.False(t, test.AsErrorIn(errors.New("james"), errors.New("frank")))
-//}

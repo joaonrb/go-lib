@@ -3,6 +3,7 @@ package monad_test
 import (
 	"errors"
 	"fmt"
+	"github.com/joaonrb/go-lib/op"
 	"testing"
 
 	"github.com/joaonrb/go-lib/monad"
@@ -66,42 +67,32 @@ func TestResultOKTryErrorShouldRaiseAnError(t *testing.T) {
 	})
 }
 
-func TestResultOKIsShouldReturnTrueWhenUseTheSameValue(t *testing.T) {
+func TestResultOKIfEqualShouldReturnTrueWhenUseTheSameValue(t *testing.T) {
 	var test monad.Result[int] = monad.OK[int]{Value: 10}
-	assert.True(t, test.Is(10))
+	assert.True(t, test.If(op.Equal(10)))
 }
 
-func TestResultOKIsShouldReturnFalseWhenUseTheDifferentValue(t *testing.T) {
+func TestResultOKIfEqualShouldReturnFalseWhenUseTheDifferentValue(t *testing.T) {
 	var test monad.Result[int] = monad.OK[int]{Value: 10}
-	assert.False(t, test.Is(11))
+	assert.False(t, test.If(op.Equal(11)))
 }
 
-func TestResultOKIsInShouldReturnTrueWhenHaveAnyEqualValue(t *testing.T) {
+func TestResultOKIfInShouldReturnTrueWhenHaveAnyEqualValue(t *testing.T) {
 	var test monad.Result[int] = monad.OK[int]{Value: 10}
-	assert.True(t, test.IsIn(1, 2, 3, 4, 5, 10))
+	assert.True(t, test.If(op.In(1, 2, 3, 4, 5, 10)))
 }
 
-func TestResultOKIsShouldReturnFalseWhenDoesNotHaveAnyEqualValue(t *testing.T) {
+func TestResultOKIfInShouldReturnFalseWhenDoesNotHaveAnyEqualValue(t *testing.T) {
 	var test monad.Result[int] = monad.OK[int]{Value: 10}
-	assert.False(t, test.IsIn(1, 2, 3, 4, 5))
+	assert.False(t, test.If(op.In(1, 2, 3, 4, 5)))
 }
 
-func TestResultOKIsErrorShouldReturnFalse(t *testing.T) {
+func TestResultOKIfErrorEqualShouldReturnFalse(t *testing.T) {
 	var test monad.Result[int] = monad.OK[int]{Value: 10}
-	assert.False(t, test.IsError(errors.New("foo")))
+	assert.False(t, test.IfError(op.Equal(errors.New("foo"))))
 }
 
 func TestResultOKIsErrorInShouldReturnFalse(t *testing.T) {
 	var test monad.Result[int] = monad.OK[int]{Value: 10}
-	assert.False(t, test.IsErrorIn(errors.New("foo"), errors.New("bar")))
-}
-
-func TestResultOKAsErrorShouldReturnFalse(t *testing.T) {
-	var test monad.Result[int] = monad.OK[int]{Value: 10}
-	assert.False(t, test.AsError(errors.New("foo")))
-}
-
-func TestResultOKAsErrorInShouldReturnFalse(t *testing.T) {
-	var test monad.Result[int] = monad.OK[int]{Value: 10}
-	assert.False(t, test.AsErrorIn(errors.New("foo"), errors.New("bar")))
+	assert.False(t, test.IfError(op.In(errors.New("foo"), errors.New("bar"))))
 }

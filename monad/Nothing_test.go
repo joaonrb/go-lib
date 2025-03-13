@@ -2,6 +2,7 @@ package monad_test
 
 import (
 	"fmt"
+	"github.com/joaonrb/go-lib/op"
 	"testing"
 
 	"github.com/joaonrb/go-lib/monad"
@@ -59,10 +60,10 @@ func TestMaybeNothingTryValueShouldExecuteWhenNothingMethod(t *testing.T) {
 
 func TestMaybeNothingIfShouldReturnFalse(t *testing.T) {
 	var test monad.Maybe[int] = monad.Nothing[int]{}
-	assert.False(t, test.If(monad.Equal(10)))
+	assert.False(t, test.If(op.Equal(10)))
 }
 
 func TestMaybeNothingIsInShouldReturnFalse(t *testing.T) {
 	var test monad.Maybe[int] = monad.Nothing[int]{}
-	assert.False(t, test.If(monad.In(1, 2, 3, 4, 5, 10)))
+	assert.False(t, test.If(op.In(1, 2, 3, 4, 5, 10)))
 }

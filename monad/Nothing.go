@@ -2,6 +2,7 @@ package monad
 
 import (
 	"fmt"
+	"github.com/joaonrb/go-lib/op"
 )
 
 var _ Maybe[any] = Nothing[any]{}
@@ -31,11 +32,11 @@ func (nothing Nothing[T]) Or(value T) Maybe[T] {
 	return Some[T]{Value: value}
 }
 
-func (nothing Nothing[T]) If(Comparator[T]) bool {
+func (nothing Nothing[T]) If(op.Operator[T]) bool {
 	return false
 }
 
-func (nothing Nothing[T]) DoIf(Comparator[T], func(T) Maybe[T]) Maybe[T] {
+func (nothing Nothing[T]) DoIf(op.Operator[T], func(T) Maybe[T]) Maybe[T] {
 	return nothing
 }
 

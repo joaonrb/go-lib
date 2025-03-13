@@ -1,14 +1,22 @@
-package monad
+package op
 
 import "cmp"
 
-type Comparator[T any] func(T) bool
+type Operator[T any] func(T) bool
 
-type Equatable[T any] interface {
-	Equal(other T) bool
+func (operator Operator[T]) And(other Operator[T]) Operator[T] {
+	return func(value T) bool {
+		return operator(value) && other(value)
+	}
 }
 
-func Equal[T any](other T) Comparator[T] {
+func (operator Operator[T]) Or(other Operator[T]) Operator[T] {
+	return func(value T) bool {
+		return operator(value) || other(value)
+	}
+}
+
+func Equal[T any](other T) Operator[T] {
 	return func(value T) bool {
 		var v any = value
 		equatable, ok := v.(Equatable[T])
@@ -16,42 +24,42 @@ func Equal[T any](other T) Comparator[T] {
 	}
 }
 
-func Different[T any](other T) Comparator[T] {
-	equal := Equal(other)
+func Not[T any](operator Operator[T]) Operator[T] {
 	return func(value T) bool {
-		return !equal(value)
+		return !operator(value)
 	}
 }
 
-func Greater[T cmp.Ordered](other T) Comparator[T] {
+func Greater[T cmp.Ordered](other T) Operator[T] {
 	return func(value T) bool {
 		return value > other
 	}
 }
 
-func GreaterOrEqual[T cmp.Ordered](other T) Comparator[T] {
+func GreaterOrEqual[T cmp.Ordered](other T) Operator[T] {
 	return func(value T) bool {
 		return value >= other
 	}
 }
 
-func Less[T cmp.Ordered](other T) Comparator[T] {
+func Less[T cmp.Ordered](other T) Operator[T] {
 	return func(value T) bool {
 		return value < other
 	}
 }
 
-func LessOrEqual[T cmp.Ordered](other T) Comparator[T] {
+func LessOrEqual[T cmp.Ordered](other T) Operator[T] {
+
 	return func(value T) bool {
 		return value <= other
 	}
 }
 
-func In[T any](others ...T) Comparator[T] {
+func In[T any](others ...T) Operator[T] {
 	return func(value T) bool {
 		var (
 			v          any = value
-			comparator Comparator[T]
+			comparator Operator[T]
 		)
 		equatable, ok := v.(Equatable[T])
 		if ok {
@@ -69,13 +77,6 @@ func In[T any](others ...T) Comparator[T] {
 			}
 		}
 		return false
-	}
-}
-
-func NotIn[T any](others ...T) Comparator[T] {
-	in := In(others...)
-	return func(value T) bool {
-		return !in(value)
 	}
 }
 

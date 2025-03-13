@@ -1,5 +1,7 @@
 package monad
 
+import "github.com/joaonrb/go-lib/op"
+
 type Maybe[T any] interface {
 	maybe()
 	Then(call func(T) Maybe[T]) Maybe[T]
@@ -7,8 +9,8 @@ type Maybe[T any] interface {
 	WhenValue(call func(T)) Maybe[T]
 	WhenNothing(call func()) Maybe[T]
 	Or(value T) Maybe[T]
-	If(comparator Comparator[T]) bool
-	DoIf(comparator Comparator[T], do func(T) Maybe[T]) Maybe[T]
+	If(comparator op.Operator[T]) bool
+	DoIf(comparator op.Operator[T], do func(T) Maybe[T]) Maybe[T]
 	TryValue() T
 }
 

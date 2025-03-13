@@ -2,6 +2,7 @@ package monad
 
 import (
 	"fmt"
+	"github.com/joaonrb/go-lib/op"
 )
 
 var _ Result[any] = OK[any]{}
@@ -33,38 +34,24 @@ func (ok OK[T]) Or(T) Result[T] {
 	return ok
 }
 
-func (ok OK[T]) Is(value T) bool {
-	var s, t any = ok.Value, value
-	return s == t
+func (ok OK[T]) If(operator op.Operator[T]) bool {
+	return operator(ok.Value)
 }
 
-func (ok OK[T]) IsIn(values ...T) bool {
-	var (
-		s any = ok.Value
-		t any
-	)
-	result := false
-	for i := 0; !result && i < len(values); i++ {
-		t = values[i]
-		result = result || s == t
+func (ok OK[T]) DoIf(comparator op.Operator[T], do func(T) Result[T]) Result[T] {
+	if ok.If(comparator) {
+		return do(ok.Value)
+	} else {
+		return ok
 	}
-	return result
 }
 
-func (ok OK[T]) IsError(error) bool {
+func (ok OK[T]) IfError(op.Operator[error]) bool {
 	return false
 }
 
-func (ok OK[T]) IsErrorIn(...error) bool {
-	return false
-}
-
-func (ok OK[T]) AsError(any) bool {
-	return false
-}
-
-func (ok OK[T]) AsErrorIn(...any) bool {
-	return false
+func (ok OK[T]) DoIfError(op.Operator[error], func(error) Result[T]) Result[T] {
+	return ok
 }
 
 func (ok OK[T]) TryValue() T {

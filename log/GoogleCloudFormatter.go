@@ -38,6 +38,6 @@ type Entry struct {
 func (entry *Entry) String() string {
 	return fmt.Sprintf(
 		"GoogleCloudLogEntry{Message: %s}",
-		convertto.JSON(entry.Message).MustValue(),
+		convertto.JSON(entry.Message).TryValue(),
 	)
 }

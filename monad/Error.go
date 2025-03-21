@@ -43,7 +43,7 @@ func (err Error[T]) DoIf(op.Operator[T], func(T) Result[T]) Result[T] {
 }
 
 func (err Error[T]) IfError(operator op.Operator[error]) bool {
-	return operator(err.Err)
+	return operator.Evaluate(err.Err)
 }
 
 func (err Error[T]) DoIfError(operator op.Operator[error], do func(error) Result[T]) Result[T] {

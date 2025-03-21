@@ -35,7 +35,7 @@ func (ok OK[T]) Or(T) Result[T] {
 }
 
 func (ok OK[T]) If(operator op.Operator[T]) bool {
-	return operator(ok.Value)
+	return operator.Evaluate(ok.Value)
 }
 
 func (ok OK[T]) DoIf(comparator op.Operator[T], do func(T) Result[T]) Result[T] {

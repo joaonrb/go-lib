@@ -2,30 +2,30 @@ package op
 
 import "fmt"
 
-type EqualOperator[T any] struct {
+type EqualEvaluator[T any] struct {
 	value    any
 	evaluate func(any) bool
 }
 
 func Equal[T any](value T) Operator[T] {
-	operator := EqualOperator[T]{value: value}
-	equatable, ok := operator.value.(Equatable[T])
+	evaluator := EqualEvaluator[T]{value: value}
+	equatable, ok := evaluator.value.(Equatable[T])
 	if ok {
-		operator.evaluate = equatable.Equal
+		evaluator.evaluate = equatable.Equal
 	} else {
-		operator.evaluate = operator.defaultEvaluate
+		evaluator.evaluate = evaluator.defaultEvaluate
 	}
-	return &operator
+	return Operator[T]{Evaluator: &evaluator}
 }
 
-func (operation *EqualOperator[T]) Evaluate(other T) bool {
-	return operation.evaluate(other)
+func (evaluator *EqualEvaluator[T]) Evaluate(other T) bool {
+	return evaluator.evaluate(other)
 }
 
-func (operation *EqualOperator[T]) defaultEvaluate(other any) bool {
-	return operation.value == other
+func (evaluator *EqualEvaluator[T]) defaultEvaluate(other any) bool {
+	return evaluator.value == other
 }
 
-func (operation *EqualOperator[T]) String() string {
-	return fmt.Sprint()
+func (evaluator *EqualEvaluator[T]) String() string {
+	return fmt.Sprintf("X == %s", evaluator.value)
 }

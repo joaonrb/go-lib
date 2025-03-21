@@ -35,7 +35,7 @@ func (some Some[T]) Or(T) Maybe[T] {
 }
 
 func (some Some[T]) If(comparator op.Operator[T]) bool {
-	return comparator(some.Value)
+	return comparator.Evaluate(some.Value)
 }
 
 func (some Some[T]) DoIf(comparator op.Operator[T], do func(T) Maybe[T]) Maybe[T] {

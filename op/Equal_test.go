@@ -7,7 +7,7 @@ import (
 )
 
 func assertTrue[T any](t *testing.T, operator op.Operator[T], value T) {
-	assert.True(t, operator(value))
+	assert.True(t, operator.Evaluate(value))
 }
 
 func TestEqualShouldReturnTrueWhenUseTheSameValue(t *testing.T) {

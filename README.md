@@ -31,3 +31,6 @@ Implement an atomic value.
 
 ### async
 Implement async/await functionality.
+
+### op (operators)
+Have a set of operators that can be used with monads or other functionalities.
